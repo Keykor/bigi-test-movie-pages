@@ -1,95 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
+import { Grid, Card, CardMedia, CardContent, Checkbox, Container, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import { AppBar, Toolbar, Typography, Grid, Card, CardContent, CardMedia, Button, CssBaseline, Container } from "@mui/material";
 import movies from "../data/movies";
+import NavigationBar from "../components/NavigationBar";
+import ProgressStepper from "../components/ProgressStepper";
+import NavigationButtons from "../components/NavigationButtons";
 
-
-export default function Home() {
+export default function SelectMovie() {
+    const [selectedMovie, setSelectedMovie] = useState(null);
     const router = useRouter();
-    return (
-        <div>
-            {/* Barra superior */}
-            <CssBaseline />
-            <AppBar position="fixed" elevation={0}>
-                <Toolbar>
-                    <Typography variant="h6" style={{ flexGrow: 1 }}>
-                        Movix
-                    </Typography>
-                </Toolbar>
-            </AppBar>
 
-            <Container style={{ marginTop: 100 }}>
-                <Grid container spacing={3}>
-                    {movies.map((movie) => (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            md={4}
-                            key={movie.id}
-                            style={{ display: 'flex', justifyContent: 'center' }}
+    const handleNext = () => {
+        if (selectedMovie) {
+            router.push(`/theatre?movieId=${selectedMovie}`);
+        }
+    };
+
+    return (
+        <Container style={{ marginTop: "80px" }}>
+            {/* Barra superior */}
+            <NavigationBar />
+
+            {/* Barra de progreso */}
+            <ProgressStepper activeStep={0} />
+
+            {/* Selección de películas */}
+            <Typography variant="h5" style={{ marginBottom: "20px" }}>
+                Select Movie
+            </Typography>
+            <Grid container spacing={3}>
+                {movies.map((movie) => (
+                    <Grid item xs={12} sm={6} md={3} key={movie.id}>
+                        <Card
+                            style={{
+                                border: selectedMovie === movie.id ? "2px solid orange" : "none",
+                                boxShadow: selectedMovie === movie.id ? "0px 0px 10px orange" : "none",
+                            }}
                         >
-                            <Card
-                                style={{
-                                    width: '300px',
-                                    height: '450px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                }}
-                            >
-                                <CardMedia
-                                    component="img"
-                                    image={movie.image}
-                                    alt={movie.title}
-                                    style={{ height: '150px', objectFit: 'cover' }}
+                            <CardMedia component="img" height="140" image={movie.image} alt={movie.title} />
+                            <CardContent>
+                                <Checkbox
+                                    checked={selectedMovie === movie.id}
+                                    onChange={() => setSelectedMovie(movie.id)}
                                 />
-                                <CardContent
-                                    style={{
-                                        flex: 1,
-                                        overflow: 'hidden',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography
-                                        variant="h6"
-                                        style={{
-                                            textAlign: 'center',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                        }}
-                                    >
-                                        {movie.title}
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        style={{
-                                            textAlign: 'center',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            display: '-webkit-box',
-                                            WebkitLineClamp: 3,
-                                            WebkitBoxOrient: 'vertical',
-                                        }}
-                                    >
-                                        {movie.description}
-                                    </Typography>
-                                </CardContent>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    style={{ margin: '8px' }}
-                                    onClick={() => router.push(`/movie/${movie.id}`)}
-                                >
-                                    Get Tickets
-                                </Button>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Container>
-        </div>
+                                <Typography variant="h6">{movie.title}</Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+
+            {/* Botones de navegación */}
+            <NavigationButtons onNext={handleNext} nextDisabled={!selectedMovie} />
+        </Container>
     );
 }
