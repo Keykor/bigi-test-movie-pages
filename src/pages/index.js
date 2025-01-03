@@ -37,7 +37,7 @@ export default function SelectMovie() {
                                 boxShadow: selectedMovie === movie.id ? "0px 0px 10px orange" : "none",
                             }}
                         >
-                            <CardMedia component="img" height="140" image={movie.image} alt={movie.title} />
+                            <CardMedia component="img" height="400" image={movie.image} alt={movie.title} />
                             <CardContent>
                                 <Checkbox
                                     checked={selectedMovie === movie.id}
