@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Box } from "@mui/material";
 import { useRouter } from "next/router";
 
-export default function NavigationButtons({ onNext, nextDisabled = false, nextLabel = "Next" }) {
+export default function NavigationButtons({ onNext, prevDisabled = false, nextDisabled = false, nextLabel = "Next" }) {
     const router = useRouter();
 
     return (
@@ -15,7 +15,8 @@ export default function NavigationButtons({ onNext, nextDisabled = false, nextLa
         >
             <Button
                 variant="contained"
-                style={{ backgroundColor: "#ccc" }}
+                color="primary"
+                disabled={prevDisabled} // Deshabilitado si no cumple con alguna condición
                 onClick={() => router.back()} // Navega hacia atrás
             >
                 Back

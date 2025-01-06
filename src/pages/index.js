@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Card, CardMedia, CardContent, Checkbox, Container, Typography } from "@mui/material";
+import { Grid, Card, CardActionArea, CardMedia, CardContent, Checkbox, Container, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import movies from "../data/movies";
 import NavigationBar from "../components/NavigationBar";
@@ -7,8 +7,9 @@ import ProgressStepper from "../components/ProgressStepper";
 import NavigationButtons from "../components/NavigationButtons";
 
 export default function SelectMovie() {
-    const [selectedMovie, setSelectedMovie] = useState(null);
+    // const [selectedMovie, setSelectedMovie] = useState(null);
     const router = useRouter();
+    const [selectedMovie, setSelectedMovie] = React.useState(0);
 
     const handleNext = () => {
         if (selectedMovie) {
@@ -31,27 +32,27 @@ export default function SelectMovie() {
             <Grid container spacing={3}>
                 {movies.map((movie) => (
                     <Grid item xs={12} sm={6} md={3} key={movie.id}>
-                        <Card
-                            style={{
-                                border: selectedMovie === movie.id ? "2px solid orange" : "none",
-                                boxShadow: selectedMovie === movie.id ? "0px 0px 10px orange" : "none",
-                            }}
-                        >
+                        <Card>
+                          <CardActionArea
+                            onClick={() => setSelectedMovie(movie.id)}
+                            data-active={selectedMovie === movie.id ? '' : undefined}
+                            sx={{
+                              height: '100%',
+                              '&[data-active]': {border: "2px solid orange", backgroundColor: 'action.selected','&:hover': {backgroundColor: 'action.selectedHover',},},
+                              }}
+                          >
                             <CardMedia component="img" height="400" image={movie.image} alt={movie.title} />
                             <CardContent>
-                                <Checkbox
-                                    checked={selectedMovie === movie.id}
-                                    onChange={() => setSelectedMovie(movie.id)}
-                                />
                                 <Typography variant="h6">{movie.title}</Typography>
                             </CardContent>
+                          </CardActionArea>
                         </Card>
                     </Grid>
                 ))}
             </Grid>
 
             {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} nextDisabled={!selectedMovie} />
+            <NavigationButtons onNext={handleNext} prevDisabled={true} nextDisabled={!selectedMovie} />
         </Container>
     );
 }
