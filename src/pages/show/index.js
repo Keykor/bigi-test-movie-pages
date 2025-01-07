@@ -7,6 +7,8 @@ import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
+import Footer from "../../components/Footer";
+
 
 export default function SelectShow() {
     const router = useRouter();
@@ -33,6 +35,7 @@ export default function SelectShow() {
     };
 
     return (
+        <>
         <Container style={{ marginTop: "80px" }}>
             {/* Barra de navegación */}
             <NavigationBar />
@@ -77,5 +80,8 @@ export default function SelectShow() {
             {/* Botones de navegación */}
             <NavigationButtons onNext={handleNext} nextDisabled={!selectedTime} />
         </Container>
+        {/* Footer */}
+        <Footer />
+        </>
     );
 }

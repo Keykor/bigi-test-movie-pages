@@ -7,6 +7,8 @@ import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
+import Footer from "../../components/Footer";
+
 
 export default function SelectDate() {
     const router = useRouter();
@@ -26,6 +28,7 @@ export default function SelectDate() {
     };
 
     return (
+        <>
         <Container style={{ marginTop: "80px" }}>
             {/* Barra superior */}
             <NavigationBar />
@@ -59,5 +62,8 @@ export default function SelectDate() {
             {/* Botones de navegación */}
             <NavigationButtons onNext={handleNext} nextDisabled={!selectedDate} />
         </Container>
+        {/* Footer */}
+        <Footer />
+        </>
     );
 }

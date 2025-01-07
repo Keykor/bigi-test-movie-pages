@@ -5,6 +5,7 @@ import movies from "../data/movies";
 import NavigationBar from "../components/NavigationBar";
 import ProgressStepper from "../components/ProgressStepper";
 import NavigationButtons from "../components/NavigationButtons";
+import Footer from "../components/Footer";
 
 export default function SelectMovie() {
     // const [selectedMovie, setSelectedMovie] = useState(null);
@@ -18,6 +19,7 @@ export default function SelectMovie() {
     };
 
     return (
+        <>
         <Container style={{ marginTop: "80px" }}>
             {/* Barra superior */}
             <NavigationBar />
@@ -54,5 +56,8 @@ export default function SelectMovie() {
             {/* Botones de navegación */}
             <NavigationButtons onNext={handleNext} prevDisabled={true} nextDisabled={!selectedMovie} />
         </Container>
+        {/* Footer */}
+        <Footer />
+        </>
     );
 }

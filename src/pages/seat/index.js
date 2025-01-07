@@ -7,6 +7,8 @@ import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
+import Footer from "../../components/Footer";
+
 
 const seatStructure = {
     Back: {
@@ -107,6 +109,7 @@ export default function SelectSeats() {
     };
 
     return (
+        <>
         <Container style={{ marginTop: "80px" }}>
             {/* Barra superior */}
             <NavigationBar />
@@ -232,5 +235,8 @@ export default function SelectSeats() {
             {/* Botones de navegación */}
             <NavigationButtons onNext={handleNext} nextDisabled={!selectedSeat} />
         </Container>
+        {/* Footer */}
+        <Footer />
+        </>
     );
 }

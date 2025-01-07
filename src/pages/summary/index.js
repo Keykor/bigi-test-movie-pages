@@ -6,6 +6,8 @@ import theatres from "../../data/theatres";
 import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
+import Footer from "../../components/Footer";
+
 
 export default function Summary() {
     const router = useRouter();
@@ -30,6 +32,7 @@ export default function Summary() {
     };
 
     return (
+        <>
         <Container style={{ marginTop: "80px" }}>
             {/* Barra de navegación */}
             <NavigationBar />
@@ -133,5 +136,8 @@ export default function Summary() {
                 </Button>
             </Box>
         </Container>
+        {/* Footer */}
+        <Footer />
+        </>
     );
 }

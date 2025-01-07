@@ -10,9 +10,10 @@ import NavigationButtons from "../../components/NavigationButtons";
 import Head from "next/head"
 import Script from 'next/script'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import Footer from "../../components/Footer";
 
 
-function Markers({ data }){
+function Markers({ data, theatreSetter }){
     const map = useMap();
     const maxZoom = Math.min(...data.map(theatre => theatre.zoom))
     console.log("Max Zoom is "+maxZoom)
@@ -22,7 +23,10 @@ function Markers({ data }){
         data.map((theatre, index) => (
             <Marker position={theatre.coordinates}>
                 <Popup>
-                <span>{theatre.name}</span>
+                <div>
+                    <h4>{theatre.name}</h4>
+                    <button onClick={() => theatreSetter(theatre.id)}>Select</button>
+                </div>
               </Popup>
             </Marker>
       ))
@@ -83,10 +87,10 @@ export default function SelectTheatre() {
                     displayEmpty
                     style={{ width: "200px" }}
                 >
-                    <MenuItem value={1}>1 km</MenuItem>
-                    <MenuItem value={3}>3 km</MenuItem>
-                    <MenuItem value={5}>5 km</MenuItem>
-                    <MenuItem value={10}>10 km</MenuItem>
+                    <MenuItem value={1}> &lt; 1 km</MenuItem>
+                    <MenuItem value={3}>&lt; 3 km</MenuItem>
+                    <MenuItem value={5}>&lt; 5 km</MenuItem>
+                    <MenuItem value={10}>&lt; 10 km</MenuItem>
                 </Select>
             </Box>
             
@@ -100,13 +104,10 @@ export default function SelectTheatre() {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Markers data={filteredTheatres} />
+              <Markers data={filteredTheatres} theatreSetter={setSelectedTheatre}/>
             </MapContainer>
             
             {/* Selección de teatros */}
-            <Typography variant="h5" style={{ marginBottom: "20px" }}>
-                Select Theatre
-            </Typography>
             <Grid container spacing={3}>
                 {filteredTheatres.map((theatre) => (
                     <Grid item xs={12} sm={6} md={3} key={theatre.id}>
@@ -138,6 +139,8 @@ export default function SelectTheatre() {
             {/* Botones de navegación */}
             <NavigationButtons onNext={handleNext} nextDisabled={!selectedTheatre} />
         </Container>
+        {/* Footer */}
+        <Footer />
         <Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""/>
