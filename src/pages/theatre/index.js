@@ -7,6 +7,27 @@ import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
+import Head from "next/head"
+import Script from 'next/script'
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+
+
+function Markers({ data }){
+    const map = useMap();
+    const maxZoom = Math.min(...data.map(theatre => theatre.zoom))
+    console.log("Max Zoom is "+maxZoom)
+    map.setZoom(maxZoom);
+    return(
+        data.length > 0 &&
+        data.map((theatre, index) => (
+            <Marker position={theatre.coordinates}>
+                <Popup>
+                <span>{theatre.name}</span>
+              </Popup>
+            </Marker>
+      ))
+    )
+}
 
 export default function SelectTheatre() {
     const router = useRouter();
@@ -34,6 +55,13 @@ export default function SelectTheatre() {
     };
 
     return (
+        <>
+        <Head>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+             integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+             crossorigin=""/>
+            <title>Select Theatre - Movix</title>
+        </Head>
         <Container style={{ marginTop: "80px" }}>
             {/* Barra superior */}
             <NavigationBar />
@@ -61,7 +89,20 @@ export default function SelectTheatre() {
                     <MenuItem value={10}>10 km</MenuItem>
                 </Select>
             </Box>
-
+            
+            {/* Selección de teatros pero en realidad es un mapa*/}
+            <Typography variant="h5" style={{ marginBottom: "20px" }}>
+                Select Theatre
+            </Typography>
+            
+            <MapContainer center={[55.6761, 12.5683]} zoom={13} scrollWheelZoom={false} style={{height: 500}}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Markers data={filteredTheatres} />
+            </MapContainer>
+            
             {/* Selección de teatros */}
             <Typography variant="h5" style={{ marginBottom: "20px" }}>
                 Select Theatre
@@ -97,5 +138,9 @@ export default function SelectTheatre() {
             {/* Botones de navegación */}
             <NavigationButtons onNext={handleNext} nextDisabled={!selectedTheatre} />
         </Container>
+        <Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""/>
+        </>
     );
 }
