@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Card, CardActionArea, CardMedia, CardContent, Checkbox, Container, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import movies from "../data/movies";
+import allMovies from "../data/movies";
 import NavigationBar from "../components/NavigationBar";
 import ProgressStepper from "../components/ProgressStepper";
 import NavigationButtons from "../components/NavigationButtons";
@@ -11,6 +11,7 @@ export default function SelectMovie() {
     // const [selectedMovie, setSelectedMovie] = useState(null);
     const router = useRouter();
     const [selectedMovie, setSelectedMovie] = React.useState(0);
+    const movies = allMovies.slice(0,6);
 
     const handleNext = () => {
         if (selectedMovie) {
@@ -33,7 +34,7 @@ export default function SelectMovie() {
             </Typography>
             <Grid container spacing={3}>
                 {movies.map((movie) => (
-                    <Grid item xs={12} sm={6} md={3} key={movie.id}>
+                    <Grid item xs={12} sm={6} md={2} key={movie.id}>
                         <Card>
                           <CardActionArea
                             onClick={() => setSelectedMovie(movie.id)}
@@ -43,7 +44,7 @@ export default function SelectMovie() {
                               '&[data-active]': {border: "2px solid orange", backgroundColor: 'action.selected','&:hover': {backgroundColor: 'action.selectedHover',},},
                               }}
                           >
-                            <CardMedia component="img" height="400" image={movie.image} alt={movie.title} />
+                            <CardMedia component="img" height="280" image={movie.image} alt={movie.title} />
                             <CardContent>
                                 <Typography variant="h6">{movie.title}</Typography>
                             </CardContent>

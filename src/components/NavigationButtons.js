@@ -10,12 +10,13 @@ export default function NavigationButtons({ onNext, prevDisabled = false, nextDi
             style={{
                 display: "flex",
                 justifyContent: "space-between",
-                marginTop: "20px",
+                marginTop: "30px",
             }}
         >
             <Button
                 variant="contained"
                 color="primary"
+                size="large"
                 disabled={prevDisabled} // Deshabilitado si no cumple con alguna condición
                 onClick={() => router.back()} // Navega hacia atrás
             >
@@ -24,6 +25,7 @@ export default function NavigationButtons({ onNext, prevDisabled = false, nextDi
             <Button
                 variant="contained"
                 color="primary"
+                size="large"
                 disabled={nextDisabled} // Deshabilitado si no cumple con alguna condición
                 onClick={onNext} // Acción personalizada para el botón Next
             >

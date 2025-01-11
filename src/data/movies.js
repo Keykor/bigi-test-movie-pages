@@ -1,4 +1,4 @@
-const movies = [
+const allMovies = [
     { id: 1, title: "The Romlch", image: "covers/cover01.png" },
     { id: 2, title: "Cmise Pohldle", image: "covers/cover02.png" },
     { id: 3, title: "Inspiginig", image: "covers/cover03.png" },
@@ -9,4 +9,4 @@ const movies = [
     { id: 8, title: "Bpdan", image: "covers/cover08.png" },
 ];
 
-export default movies;
+export default allMovies;

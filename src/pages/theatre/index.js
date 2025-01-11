@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Card, CardMedia, CardContent, Checkbox, Container, Typography, Box, MenuItem, Select } from "@mui/material";
+import { Grid, Card, CardActionArea, CardMedia, CardContent, Checkbox, Container, Typography, Box, MenuItem, Select } from "@mui/material";
 import { useRouter } from "next/router";
 import movies from "../../data/movies";
 import theatres from "../../data/theatres";
@@ -14,6 +14,15 @@ import Footer from "../../components/Footer";
 
 
 function Markers({ data, theatreSetter }){
+    var greenIcon = L.icon({
+        iconUrl: 'marker-icon-2x.png',
+        shadowUrl: 'marker-shadow.png',
+        iconSize:     [24, 40],
+        shadowSize:   [40, 60],
+        iconAnchor:   [10, 40],
+        shadowAnchor: [10, 60]
+    });    
+    
     const map = useMap();
     const maxZoom = Math.min(...data.map(theatre => theatre.zoom))
     console.log("Max Zoom is "+maxZoom)
@@ -21,7 +30,7 @@ function Markers({ data, theatreSetter }){
     return(
         data.length > 0 &&
         data.map((theatre, index) => (
-            <Marker position={theatre.coordinates}>
+            <Marker position={theatre.coordinates} icon={greenIcon}>
                 <Popup>
                 <div>
                     <h4>{theatre.name}</h4>
@@ -77,15 +86,27 @@ export default function SelectTheatre() {
             <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
                 {selectedMovie && <SelectionCard title={selectedMovie.title} image={selectedMovie.image} />}
             </Box>
+            
+            {/* Selección de teatros pero en realidad es un mapa*/}
+            <Typography variant="h5" style={{ marginBottom: "20px" }}>
+                Select Theatre
+            </Typography>
+            
 
             {/* Filtro por distancia */}
-            <Box style={{ marginBottom: "20px" }}>
-                <Typography gutterBottom>Filter by Distance:</Typography>
+            <Box style={{ position: "absolute", zIndex: "9999", margin:"6px 0 0 60px" }}>
+                <Typography gutterBottom style={{textShadow: "2px 2px 4px white, -2px -2px 4px white"}} >Filter by Distance:</Typography>
                 <Select
                     value={maxDistance}
                     onChange={handleDistanceChange}
                     displayEmpty
-                    style={{ width: "200px" }}
+                    style={{ width: "200px", background: "white"}}
+                    sx={{
+                           '& .MuiSelect-select': {
+                              paddingTop: 1,
+                              paddingBottom: 1,
+                           }
+                         }}
                 >
                     <MenuItem value={1}> &lt; 1 km</MenuItem>
                     <MenuItem value={3}>&lt; 3 km</MenuItem>
@@ -94,12 +115,10 @@ export default function SelectTheatre() {
                 </Select>
             </Box>
             
-            {/* Selección de teatros pero en realidad es un mapa*/}
-            <Typography variant="h5" style={{ marginBottom: "20px" }}>
-                Select Theatre
-            </Typography>
+            <Grid container spacing={3}>
             
-            <MapContainer center={[55.6761, 12.5683]} zoom={13} scrollWheelZoom={false} style={{height: 500}}>
+            <Grid item xs={12} sm={6} md={6}>
+            <MapContainer center={[55.6761, 12.5683]} zoom={13} scrollWheelZoom={false} style={{height: 400, width: 600}}>
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -107,6 +126,8 @@ export default function SelectTheatre() {
               <Markers data={filteredTheatres} theatreSetter={setSelectedTheatre}/>
             </MapContainer>
             
+            </Grid>   
+            <Grid item xs={12} sm={5} md={5} style={{marginLeft:"30px"}}>
             {/* Selección de teatros */}
             <Grid container spacing={3}>
                 {filteredTheatres.map((theatre) => (
@@ -117,20 +138,35 @@ export default function SelectTheatre() {
                                 boxShadow: selectedTheatre === theatre.id ? "0px 0px 10px orange" : "none",
                             }}
                         >
+                        
+                          <CardActionArea
+                            onClick={() => setSelectedTheatre(theatre.id)}
+                            data-active={selectedTheatre === theatre.id ? '' : undefined}
+                            sx={{
+                              height: '100%',
+                              '&[data-active]': {border: "2px solid orange", backgroundColor: 'action.selected','&:hover': {backgroundColor: 'action.selectedHover',},},
+                              }}
+                          >
+                        
+                        
                             <CardMedia component="img" height="140" image={theatre.image} alt={theatre.name} />
-                            <CardContent>
-                                <Checkbox
+                            <CardContent style={{ padding: "0"}} >
+                            
+                                {/*<Checkbox
                                     checked={selectedTheatre === theatre.id}
                                     onChange={() => setSelectedTheatre(theatre.id)}
-                                />
-                                <Typography variant="h6">{theatre.name}</Typography>
+                                />*/}
+                                <Typography variant="h6" style={{fontSize:"1.1em"}} >{theatre.name}</Typography>
                                 <Typography variant="body2">{theatre.distance}</Typography>
                             </CardContent>
+                          </CardActionArea>
                         </Card>
                     </Grid>
                 ))}
             </Grid>
+            </Grid>   
 
+            </Grid>   
             {/* Mensaje si no hay teatros disponibles */}
             {filteredTheatres.length === 0 && (
                 <Typography>No theatres available within the selected distance.</Typography>

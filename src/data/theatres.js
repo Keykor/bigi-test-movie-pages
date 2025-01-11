@@ -4,7 +4,7 @@ const theatres = [
         name: "Luxor",
         distance: "0.5 km",
         image: "theatres/luxor.png",
-        coordinates: [55.68453862833217, 12.578341461117448],
+        coordinates: [55.68153862833217, 12.578341461117448],
         zoom: 15,
         schedules: {
             "Today": {
@@ -78,7 +78,7 @@ const theatres = [
         name: "Regent",
         distance: "4.5 km",
         image: "theatres/regent.png",
-        coordinates: [55.63148566500046, 12.57480179726946],
+        coordinates: [55.64348566500046, 12.57480179726946],
         zoom: 12,
         schedules: {
             "Today": {
@@ -93,7 +93,7 @@ const theatres = [
         name: "Movox",
         distance: "7.5 km",
         image: "theatres/movox.png",
-        coordinates: [55.59728021560618, 12.634904281731563],
+        coordinates: [55.60728021560618, 12.634904281731563],
         zoom: 11,
         schedules: {
             "Today": {
