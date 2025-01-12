@@ -8,7 +8,7 @@ import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
-
+import {useUserFlow} from "@/context/UserFlowProvider";
 
 const seatStructure = {
     Back: {
@@ -81,14 +81,11 @@ export default function SelectSeats() {
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
     const [selectedSeat, setSelectedSeat] = useState(null);
 
-    // Obtener los asientos ocupados
-    const occupiedSeats = selectedTheatre?.schedules?.[date]?.[time]?.reduce((acc, row) => {
-        row.occupiedSeats.forEach((seat) => acc.push(`${seat.toUpperCase()}${row.row}`));
-        return acc;
-    }, []) || [];
+    const { getAvailableSeats } = useUserFlow();
+    const availableSeats = getAvailableSeats(selectedTheatre.id);
 
     const handleSeatClick = (seatId) => {
-        if (!occupiedSeats.includes(seatId)) {
+        if (availableSeats.includes(seatId)) {
             setSelectedSeat(seatId === selectedSeat ? null : seatId);
         }
     };
@@ -157,14 +154,14 @@ export default function SelectSeats() {
                                                     style={{
                                                         width: "40px",
                                                         height: "40px",
-                                                        backgroundColor: occupiedSeats.includes(seatId)
-                                                            ? "orange"
-                                                            : selectedSeat === seatId
-                                                                ? "green"
-                                                                : "white",
+                                                        backgroundColor: availableSeats.includes(seatId)
+                                                            ? selectedSeat === seatId
+                                                                ? "green" // Seleccionado
+                                                                : "white" // Disponible
+                                                            : "orange", // Ocupado
                                                         border: "1px solid black",
                                                     }}
-                                                    disabled={occupiedSeats.includes(seatId)}
+                                                    disabled={!availableSeats.includes(seatId)}
                                                     onClick={() => handleSeatClick(seatId)}
                                                 />
                                             ))}
