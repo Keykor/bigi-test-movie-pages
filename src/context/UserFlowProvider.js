@@ -9,34 +9,68 @@ export const UserFlowProvider = ({ children }) => {
     });
 
     const [iterationConfig, setIterationConfig] = useState({
+        wantedMovie: "4",
         iterationLimit: 3,
         rules: {
-            0: { availableSeats: []},
-            1: { availableSeats: []},
-            2: { availableSeats: ["E12"]},
+            0: { availableSeats: [] },
+            1: { availableSeats: [] },
+            2: { availableSeats: ["E12"] },
         },
     });
 
-    const getAvailableSeats = (cinema) => {
-        const { iteration } = userFlow;
-        const previousSelection = userFlow.visitedCinemas.find((selection) => selection.cinema === cinema);
-        const targetIteration = previousSelection ? previousSelection.iteration : iteration;
+    const getAvailableSeats = (movieId, theatreId, date, time) => {
+        console.log(`Getting seats for movie ${movieId}, theatre ${theatreId}, iteration ${userFlow.iteration}`);
+
+        if (movieId !== iterationConfig.wantedMovie) {
+            console.log("Movie mismatch.");
+            return [];
+        }
+
+        const previousSelection = userFlow.visitedCinemas.find(
+            (selection) =>
+                selection.movieId === movieId &&
+                selection.theatreId === theatreId &&
+                selection.date === date &&
+                selection.time === time
+        );
+
+        const targetIteration = previousSelection ? previousSelection.iteration : userFlow.iteration;
+
+        console.log(`Seats available for iteration ${targetIteration}:`, iterationConfig.rules[targetIteration]?.availableSeats || []);
         return iterationConfig.rules[targetIteration]?.availableSeats || [];
     };
 
+    const addSelectedCinemaAndIncrementIteration = (movieId, theatreId, date, time) => {
+        if (movieId !== iterationConfig.wantedMovie) {
+            console.log("Skipping: movie mismatch.");
+            return;
+        }
 
-    const addSelectedCinemaAndIncrementIteration = (cinema) => {
-        const existingSelection = userFlow.visitedCinemas.some((selection) => selection.cinema === cinema);
-        if (!existingSelection) {
+        const exists = userFlow.visitedCinemas.some(
+            (selection) =>
+                selection.movieId === movieId &&
+                selection.theatreId === theatreId &&
+                selection.date === date &&
+                selection.time === time
+        );
+
+        if (!exists) {
+            console.log(`Adding selection for theatre ${theatreId}, iteration ${userFlow.iteration}`);
             setUserFlow((prev) => ({
                 ...prev,
-                visitedCinemas: [...prev.visitedCinemas, { cinema: cinema, iteration: prev.iteration }],
+                visitedCinemas: [
+                    ...prev.visitedCinemas,
+                    { movieId, theatreId, date, time, iteration: prev.iteration },
+                ],
                 iteration: prev.iteration + 1,
             }));
+        } else {
+            console.log("Selection already exists.");
         }
     };
 
     const setConfig = (config) => {
+        console.log("Updating config:", config);
         setIterationConfig(config);
     };
 

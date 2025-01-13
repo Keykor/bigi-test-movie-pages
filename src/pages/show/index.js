@@ -8,11 +8,12 @@ import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
-
+import {useUserFlow} from "@/context/UserFlowProvider";
 
 export default function SelectShow() {
     const router = useRouter();
     const { movieId, theatreId, date } = router.query;
+    const { addSelectedCinemaAndIncrementIteration } = useUserFlow();
 
     // Buscar los datos seleccionados
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
@@ -28,6 +29,7 @@ export default function SelectShow() {
     // Manejo de redirección
     const handleNext = () => {
         if (selectedTime) {
+            addSelectedCinemaAndIncrementIteration(movieId, theatreId, date, selectedTime);
             router.push(
                 `/seat?movieId=${movieId}&theatreId=${theatreId}&date=${date}&time=${selectedTime}`
             );

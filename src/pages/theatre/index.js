@@ -11,7 +11,6 @@ import Head from "next/head"
 import Script from 'next/script'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import Footer from "../../components/Footer";
-import {useUserFlow} from "@/context/UserFlowProvider";
 
 
 function Markers({ data, theatreSetter }){
@@ -47,7 +46,6 @@ export default function SelectTheatre() {
     const router = useRouter();
     const { movieId } = router.query;
 
-    const { addSelectedCinemaAndIncrementIteration } = useUserFlow();
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const [selectedTheatre, setSelectedTheatre] = useState(null);
     const [maxDistance, setMaxDistance] = useState(5); // Filtro por distancia en kilómetros
@@ -65,7 +63,6 @@ export default function SelectTheatre() {
 
     const handleNext = () => {
         if (selectedTheatre) {
-            addSelectedCinemaAndIncrementIteration(selectedTheatre);
             router.push(`/date?movieId=${movieId}&theatreId=${selectedTheatre}`);
         }
     };

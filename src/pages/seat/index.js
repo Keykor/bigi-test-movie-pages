@@ -82,7 +82,7 @@ export default function SelectSeats() {
     const [selectedSeat, setSelectedSeat] = useState(null);
 
     const { getAvailableSeats } = useUserFlow();
-    const availableSeats = getAvailableSeats(selectedTheatre.id);
+    const availableSeats = getAvailableSeats(movieId, theatreId, date, time);
 
     const handleSeatClick = (seatId) => {
         if (availableSeats.includes(seatId)) {
