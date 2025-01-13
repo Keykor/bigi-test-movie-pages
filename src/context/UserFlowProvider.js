@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
-
+import React, {createContext, useContext, useEffect, useState} from "react";
+import variations from "@/data/variations";
 const UserFlowContext = createContext();
 
 export const UserFlowProvider = ({ children }) => {
@@ -8,19 +8,21 @@ export const UserFlowProvider = ({ children }) => {
         visitedCinemas: [],
     });
 
-    const [iterationConfig, setIterationConfig] = useState({
-        wantedMovie: "4",
-        iterationLimit: 3,
-        rules: {
-            0: { availableSeats: [] },
-            1: { availableSeats: [] },
-            2: { availableSeats: ["E12"] },
-        },
-    });
+    const [iterationConfig, setIterationConfig] = useState(null);
+
+    useEffect(() => {
+        const variationGroup = variations[Math.ceil(Math.random() * Object.keys(variations).length)];
+        const selectedVariation = variationGroup[Math.floor(Math.random() * Object.keys(variationGroup).length)];
+        setIterationConfig(selectedVariation);
+        console.log("Selected Variation Config:", selectedVariation);
+    }, []);
 
     const getAvailableSeats = (movieId, theatreId, date, time) => {
         console.log(`Getting seats for movie ${movieId}, theatre ${theatreId}, iteration ${userFlow.iteration}`);
-
+        if (!iterationConfig) {
+            console.log("No config available.");
+            return [];
+        }
         if (movieId !== iterationConfig.wantedMovie) {
             console.log("Movie mismatch.");
             return [];
@@ -41,6 +43,11 @@ export const UserFlowProvider = ({ children }) => {
     };
 
     const addSelectedCinemaAndIncrementIteration = (movieId, theatreId, date, time) => {
+        if (!iterationConfig) {
+            console.log("Skipping: no config available.");
+            return;
+        }
+
         if (movieId !== iterationConfig.wantedMovie) {
             console.log("Skipping: movie mismatch.");
             return;
