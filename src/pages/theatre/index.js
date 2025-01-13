@@ -67,6 +67,10 @@ export default function SelectTheatre() {
         }
     };
 
+    const handleBack = () => {
+        router.push(`/`)
+    }
+
     return (
         <>
         <Head>
@@ -173,7 +177,7 @@ export default function SelectTheatre() {
             )}
 
             {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} nextDisabled={!selectedTheatre} />
+            <NavigationButtons onNext={handleNext} nextDisabled={!selectedTheatre} onBack={handleBack} />
         </Container>
         {/* Footer */}
         <Footer />

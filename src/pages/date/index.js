@@ -27,6 +27,8 @@ export default function SelectDate() {
         }
     };
 
+    const handleBack = () => { router.push(`/theatre?movieId=${movieId}`); };
+
     return (
         <>
         <Container style={{ marginTop: "80px" }}>
@@ -60,7 +62,7 @@ export default function SelectDate() {
             </Box>
 
             {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} nextDisabled={!selectedDate} />
+            <NavigationButtons onNext={handleNext} nextDisabled={!selectedDate} onBack={handleBack} />
         </Container>
         {/* Footer */}
         <Footer />

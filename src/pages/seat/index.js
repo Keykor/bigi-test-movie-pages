@@ -105,6 +105,10 @@ export default function SelectSeats() {
         }
     };
 
+    const handleBack = () => {
+        router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&date=${date}`);
+    }
+
     return (
         <>
         <Container style={{ marginTop: "80px" }}>
@@ -230,7 +234,7 @@ export default function SelectSeats() {
 
 
             {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} nextDisabled={!selectedSeat} />
+            <NavigationButtons onNext={handleNext} nextDisabled={!selectedSeat} onBack={handleBack} />
         </Container>
         {/* Footer */}
         <Footer />

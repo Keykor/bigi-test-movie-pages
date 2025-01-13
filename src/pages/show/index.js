@@ -34,7 +34,11 @@ export default function SelectShow() {
                 `/seat?movieId=${movieId}&theatreId=${theatreId}&date=${date}&time=${selectedTime}`
             );
         }
-    };
+    }
+
+    const handleBack = () => {
+        router.push(`/date?movieId=${movieId}&theatreId=${theatreId}`);
+    }
 
     return (
         <>
@@ -80,7 +84,7 @@ export default function SelectShow() {
             )}
 
             {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} nextDisabled={!selectedTime} />
+            <NavigationButtons onNext={handleNext} nextDisabled={!selectedTime} onBack={handleBack} />
         </Container>
         {/* Footer */}
         <Footer />
