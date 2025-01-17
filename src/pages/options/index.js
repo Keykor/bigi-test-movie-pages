@@ -59,6 +59,7 @@ export default function SelectOptions() {
 	 const [selectedDate, setSelectedDate] = useState(null);
 	 const [selectedTimespan, setSelectedTimespan] = useState(null);
 	 const [selectedSeatArea, setSelectedSeatArea] = useState(null);
+	 const todayString = (new Date()).toLocaleString('en-US', { month: 'short', day: '2-digit' });
 
 	 // Función para manejar el cambio en el filtro de distancia
 	 const handleDistanceChange = (event) => {
@@ -117,7 +118,7 @@ export default function SelectOptions() {
 										color={selectedDate === schedule.date ? "primary" : "default"}
 										onClick={() => setSelectedDate(schedule.date)}
 								  >
-										{schedule.date}
+										{schedule.date==todayString?"TODAY":schedule.date}
 								  </Button>
 							 ))}
 						</Box>
