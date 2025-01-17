@@ -6,7 +6,7 @@ import theatres from "../../data/theatres";
 import schedules from "../../data/schedules";
 import timespans from "../../data/timespans";
 import NavigationBar from "../../components/NavigationBar";
-import ProgressStepper from "../../components/ProgressStepper";
+import ProgressStepper from "../../components/ProgressStepperV2";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
 import Head from "next/head"
@@ -41,7 +41,7 @@ function Markers({ data, theatreSetter }){
 					 <Popup>
 					 <div>
 						  <h4>{theatre.name}</h4>
-						  <button onClick={() => theatreSetter(theatre.id)}>Select</button>
+						  <p>{theatre.distance}</p>
 					 </div>
 				  </Popup>
 				</Marker>
@@ -61,6 +61,11 @@ export default function SelectOptions() {
 	 const [selectedSeatArea, setSelectedSeatArea] = useState(null);
 	 const todayString = (new Date()).toLocaleString('en-US', { month: 'short', day: '2-digit' });
 
+	// Validation for next
+	const filtersSet = () => {
+		return selectedTimespan && selectedSeatArea && selectedDate && maxDistance;
+	}
+	 
 	 // Función para manejar el cambio en el filtro de distancia
 	 const handleDistanceChange = (event) => {
 		  setMaxDistance(event.target.value);
@@ -79,7 +84,7 @@ export default function SelectOptions() {
 	 };
 
 	 const handleBack = () => {
-		  router.push(`/`)
+		  router.push(`/v2`)
 	 }
 
 	 return (
@@ -88,7 +93,7 @@ export default function SelectOptions() {
 				<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 				 integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
 				 crossorigin=""/>
-				<title>Select Theatre - Movix</title>
+				<title>Select Options - Movix</title>
 		  </Head>
 		  <Container style={{ marginTop: "80px" }}>
 				{/* Barra superior */}
@@ -106,12 +111,12 @@ export default function SelectOptions() {
 				<Grid container spacing={3}>
 					<Grid item xs={12} sm={2} md={2}>
 						<Typography variant="h6" style={{ marginBottom: "20px" }}>
-							 Select Date
+							 Date
 						</Typography>
 					</Grid>
 					<Grid item xs={12} sm={6} md={6}>
 						<Box style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-							 {schedules.map((schedule) => (
+							 {schedules.slice(0,6).map((schedule) => (
 								  <Button
 										key={schedule.date}
 										variant={selectedDate === schedule.date ? "contained" : "outlined"}
@@ -129,7 +134,7 @@ export default function SelectOptions() {
 				<Grid container spacing={3}>
 					<Grid item xs={12} sm={2} md={2}>
 						<Typography variant="h6" style={{ marginBottom: "20px" }}>
-							 Select Show Start Time
+							 Show Start Time
 						</Typography>
 					</Grid>
 					<Grid item xs={12} sm={6} md={6}>
@@ -153,7 +158,7 @@ export default function SelectOptions() {
 				<Grid container spacing={3}>
 					<Grid item xs={12} sm={2} md={2}>
 					<Typography variant="h6" style={{ marginBottom: "20px" }}>
-						 Select Distance
+						 Distance from Home
 					</Typography>
 					</Grid>
 					
@@ -171,7 +176,7 @@ export default function SelectOptions() {
 						  </Button>
 					 ))}
 					</Box>
-					<MapContainer center={[55.6761, 12.5683]} zoom={13} scrollWheelZoom={false} style={{height: 400, width: 600}}>
+					<MapContainer center={[55.6761, 12.5683]} zoom={13} scrollWheelZoom={false} style={{height: 300, width: 500}}>
 					  <TileLayer
 						 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 						 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -179,62 +184,79 @@ export default function SelectOptions() {
 					  <Markers data={filteredTheatres} theatreSetter={setSelectedTheatre}/>
 					</MapContainer>
 					</Grid>
-				</Grid>
-				
-				{/* Selección de zona de asiento */}
-				<Grid container spacing={3}>
-					<Grid item xs={12} sm={2} md={2}>
-						<Typography variant="h6" style={{ marginBottom: "20px" }}>
-							 Select Seat Preference
-						</Typography>
-					</Grid>
-					<Grid item xs={12} sm={6} md={6}>
-						{/* Grilla de bloques */}
-						<Box style={{ display: "grid", gridTemplateRows: "repeat(3, auto)", gap: "20px", justifyContent: "left" }}>
-							 {/* Grilla de letras de columnas */}
-							 <Box style={{ display: "grid", gridTemplateColumns: "repeat(3, auto)", justifyItems: "center" }}>
-								  {["A - C", "D - F", "G - I"].map((col) => (
-										<Typography key={col} style={{ fontWeight: "bold" }}>
-											 {col}
-										</Typography>
-								  ))}
-							 </Box>
-							 
-							 {Object.values(seatStructure).map((section, sectionIndex) => (
-								  <Box key={sectionIndex} style={{ display: "grid", gridTemplateColumns: "repeat(3, auto)", gap: "20px" }}>
-										{section.map((area, areaIndex)=>(
-											areaIndex === 0 && (
-												  <Typography style={{ width: "30px", textAlign: "right", marginRight: "5px" }}>
-														{area.row}
-												  </Typography>
-											 ),
-											 <Box style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
-													 <Button
-														  key={area.row}
-														  style={{
-																width: "40px",
-																height: "40px",
-																backgroundColor: (selectedSeatArea === area)
-																 ? "green" // Seleccionado
-																 : "white", // Disponible
-																border: "1px solid black",
-														  }}
-														  onClick={() => setSelectedSeatArea(area)}
-													 />
-												
-										  	 </Box>
-
-										))}
-								  </Box>
-							 ))}
-						</Box>
 					
+					
+					<Grid item xs={12} sm={4} md={4}>
+					
+					<Typography variant="h6" style={{ marginBottom: "20px" }}>
+						 Seat Preference
+					</Typography>
+					{/* Grilla de bloques */}
+					<Box style={{ display: "grid", gridTemplateRows: "repeat(3, auto)", gap: "20px", justifyContent: "left" }}>
+						 {/* Grilla de letras de columnas */}
+						 <Box style={{ display: "grid", gridTemplateColumns: "repeat(3, auto)", justifyItems: "center", marginLeft:"50px" }}>
+							  {["A - C", "D - F", "G - I"].map((col) => (
+									<Typography key={col} style={{ fontWeight: "bold" }}>
+										 {col}
+									</Typography>
+							  ))}
+						 </Box>
+						 
+						 {Object.values(seatStructure).map((section, sectionIndex) => (
+							  <Box key={sectionIndex} style={{ display: "grid", gridTemplateColumns: "repeat(4, auto)", gap: "20px" }}>
+									{section.map((area, areaIndex)=>(
+										<>
+										{areaIndex === 0 && (
+											  <Typography style={{ width: "40px", textAlign: "right", marginRight: "0px" }}>
+													{area.row}
+											  </Typography>
+										 )}
+										 <Box style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
+												 <Button
+													  key={area.row}
+													  style={{
+															width: "40px",
+															height: "40px",
+															backgroundColor: (selectedSeatArea === area)
+															 ? "#1976d2" // Seleccionado
+															 : "white", // Disponible
+															border: "1px solid black",
+													  }}
+													  onClick={() => setSelectedSeatArea(area)}
+												 />
+											
+											</Box>
+										</>
 
-					</Grid>
+									))}
+							  </Box>
+						 ))}
+						 {/* Indicador de pantalla */}
+						 <Box
+							  style={{
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+									backgroundColor: "#ccc",
+									height: "40px",
+									width: "100%",
+									maxWidth: "250px",
+									margin: "10px auto auto 50px",
+									borderRadius: "4px",
+							  }}
+						 >
+							  <Typography style={{ fontWeight: "bold" }}>Screen</Typography>
+						 </Box>
+					</Box>
+				
+
+				</Grid>
+					
+					
 				</Grid>
 
 				{/* Botones de navegación */}
-				<NavigationButtons onNext={handleNext} nextDisabled={!selectedTheatre} onBack={handleBack} />
+				<NavigationButtons onNext={handleNext} nextDisabled={!filtersSet()} onBack={handleBack} />
 		  </Container>
 		  {/* Footer */}
 		  <Footer />

@@ -3,7 +3,7 @@ import { Grid, Card, CardActionArea, CardMedia, CardContent, Checkbox, Container
 import { useRouter } from "next/router";
 import allMovies from "../../data/movies";
 import NavigationBar from "../../components/NavigationBar";
-import ProgressStepper from "../../components/ProgressStepper";
+import ProgressStepper from "../../components/ProgressStepperV2";
 import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
 
