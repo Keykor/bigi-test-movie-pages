@@ -74,7 +74,7 @@ export default function SelectOptions() {
         </Box>
 
         {/* Selección de fecha */}
-        <Typography variant="h6" style={{ marginBottom: "20px" }}>Date</Typography>
+        <Typography variant="h6" style={{ marginBottom: "6px" }}>Date</Typography>
         <Box style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
           {schedules.slice(0, 6).map((schedule) => (
             <Button
@@ -88,8 +88,23 @@ export default function SelectOptions() {
           ))}
         </Box>
 
+        {/* Selección de hora */}
+        <Typography variant="h6" style={{ marginBottom: "6px" }}>Date</Typography>
+        <Box style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+           {timespans.map((timespan) => (
+              <Button
+                key={timespan.description}
+                variant={selectedTimespan === timespan.description ? "contained" : "outlined"}
+                color={selectedTimespan === timespan.description ? "primary" : "default"}
+                onClick={() => setSelectedTimespan(timespan.description)}
+              >
+                {timespan.description}
+              </Button>
+           ))}
+        </Box>
+
         {/* Selección de distancia */}
-        <Typography variant="h6" style={{ marginBottom: "20px" }}>Distance from Home</Typography>
+        <Typography variant="h6" style={{ marginBottom: "6px" }}>Distance from Home</Typography>
         <Box style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
           {[1, 3, 5, 10].map((distance) => (
             <Button
