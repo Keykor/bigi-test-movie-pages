@@ -51,9 +51,9 @@ export default function SelectOptions() {
   });
 
   const handleNext = () => {
-    if (selectedTheatre) {
-      router.push(`/date?movieId=${movieId}&theatreId=${selectedTheatre}`);
-    }
+    
+      router.push(`/filtered_options?movieId=${movieId}&timespan=${selectedTimespan}&seatArea=${selectedSeatArea.row+"|"+selectedSeatArea.col}&date=${selectedDate}&maxDistance=${maxDistance}`);
+
   };
 
   const handleBack = () => {
