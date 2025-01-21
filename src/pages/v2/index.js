@@ -5,6 +5,7 @@ import allMovies from "../../data/movies";
 import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepperV2";
 import NavigationButtons from "../../components/NavigationButtons";
+import InstructionsTab from "../../components/InstructionsTab";
 import Footer from "../../components/Footer";
 
 export default function SelectMovie() {
@@ -27,6 +28,9 @@ export default function SelectMovie() {
 
             {/* Barra de progreso */}
             <ProgressStepper activeStep={0} />
+            
+            {/* Instrucciones */}
+            <InstructionsTab movie="Inspigining" date="Today" distance="<3km" time="15:01" seat="E11"/>
 
             {/* Selección de películas */}
             <Typography variant="h5" style={{ marginBottom: "20px" }}>
