@@ -1,7 +1,10 @@
 import React from "react";
 import { Card, CardContent, Typography, Button } from '@mui/material';
+import movies from "@/data/movies";
 
-export default function InstructionsTab({movie="Arty", date="Today", distance="<5km", time="15:00", seat="12E"} ) {
+const InstructionsTab = ({variation} )  => {
+    const selectedMovie = movies.find((movie) => movie.id === parseInt(variation.movie));
+
     return (
         <Card sx={{ maxWidth: 250, position: "fixed", zIndex: "9999", right: "0", top:"20%", background: "#FFDDAA" }}>
           <CardContent>
@@ -12,13 +15,15 @@ export default function InstructionsTab({movie="Arty", date="Today", distance="<
                 Get a ticket for the following conditions:
             </Typography>
             <Typography sx={{ mb: 1.5 }}>
-                <strong>Movie:</strong> {movie}<br/> 
-                <strong>Date:</strong> {date}<br/>
-                <strong>Theatre Distance:</strong> {distance}<br/>
-                <strong>Start time:</strong> {time}<br/>
-                <strong>Seat:</strong> {seat}<br/>
+                <strong>Movie:</strong> {selectedMovie.title}<br/> 
+                <strong>Date:</strong> {variation.date}<br/>
+                <strong>Theatre Distance:</strong> {variation.distance}<br/>
+                <strong>Start time:</strong> {variation.time}<br/>
+                <strong>Seat:</strong> {variation.seat}<br/>
             </Typography>
           </CardContent>
         </Card>
       );
 }
+
+export default InstructionsTab

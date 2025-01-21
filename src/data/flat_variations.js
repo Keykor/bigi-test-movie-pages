@@ -1,6 +1,5 @@
-    const variations = {
-        1: {
-            0: {
+    const flatVariations = [
+            {
                 id: "0",
                 movie: "4",
                 seat: "E12",
@@ -12,9 +11,9 @@
                     0: { availableSeats: ["E12"] },
                 }
             },
-            1: {
+            {
                 id: "1",
-                movie: "5",
+                movie: "4",
                 seat: "E12",
                 distance: "<3km",
                 time: "19:00",
@@ -25,9 +24,9 @@
                     1: { availableSeats: ["E12"] },
                 }
             },
-            2: {
+            {
                 id: "2",
-                movie: "2",
+                movie: "4",
                 seat: "E12",
                 distance: "<3km",
                 time: "19:00",
@@ -39,9 +38,9 @@
                     2: { availableSeats: ["E12"] },
                 }
             },
-            3: {
+            {
                 id: "3",
-                movie: "1",
+                movie: "4",
                 seat: "E12",
                 distance: "<3km",
                 time: "19:00",
@@ -54,7 +53,7 @@
                     3: { availableSeats: ["E12"] },
                 }
             },
-            4: {
+            {
                 id: "4",
                 movie: "4",
                 seat: "E12",
@@ -69,10 +68,9 @@
                     3: { availableSeats: [] },
                     4: { availableSeats: ["E12"] },
                 }
-            }
-        },
-        2: {
-            0: {
+            },
+
+            {
                 id: "5",
                 movie: "4",
                 seat: "E12",
@@ -84,7 +82,7 @@
                     0: { availableSeats: ["E12"] },
                 }
             },
-            1: {
+            {
                 id: "6",
                 movie: "4",
                 seat: "E12",
@@ -97,7 +95,7 @@
                     1: { availableSeats: ["E12"] },
                 }
             },
-            2: {
+            {
                 id: "7",
                 movie: "4",
                 seat: "E12",
@@ -111,7 +109,7 @@
                     2: { availableSeats: ["E12"] },
                 }
             },
-            3: {
+            {
                 id: "8",
                 movie: "4",
                 seat: "E12",
@@ -126,7 +124,7 @@
                     3: { availableSeats: ["E12"] },
                 }
             },
-            4: {
+            {
                 id: "9",
                 movie: "4",
                 seat: "E12",
@@ -141,10 +139,8 @@
                     3: { availableSeats: ["D10"] },
                     4: { availableSeats: ["E12"] },
                 }
-            }
-        },
-        3: {
-            0: {
+            },
+            {
                 id: "10",
                 movie: "4",
                 seat: "E12",
@@ -156,7 +152,7 @@
                     0: { availableSeats: ["E12"] },
                 }
             },
-            1: {
+            {
                 id: "11",
                 movie: "4",
                 seat: "E12",
@@ -169,7 +165,7 @@
                     1: { availableSeats: ["E12"] },
                 }
             },
-            2: {
+            {
                 id: "12",
                 movie: "4",
                 seat: "E12",
@@ -183,7 +179,7 @@
                     2: { availableSeats: ["E12"] },
                 }
             },
-            3: {
+            {
                 id: "13",
                 movie: "4",
                 seat: "E12",
@@ -198,7 +194,7 @@
                     3: { availableSeats: ["E12"] },
                 }
             },
-            4: {
+            {
                 id: "14",
                 movie: "4",
                 seat: "E12",
@@ -214,7 +210,10 @@
                     4: { availableSeats: ["E12"] },
                 }
             }
-        },
-    }
 
-export default variations
+    ]
+
+
+
+
+export default flatVariations

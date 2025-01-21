@@ -23,7 +23,7 @@ export const UserFlowProvider = ({ children }) => {
             console.log("No config available.");
             return [];
         }
-        if (movieId !== iterationConfig.wantedMovie) {
+        if (movieId !== iterationConfig.movie) {
             console.log("Movie mismatch.");
             return [];
         }
@@ -48,7 +48,7 @@ export const UserFlowProvider = ({ children }) => {
             return;
         }
 
-        if (movieId !== iterationConfig.wantedMovie) {
+        if (movieId !== iterationConfig.movie) {
             console.log("Skipping: movie mismatch.");
             return;
         }

@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Grid, Card, CardActionArea, CardMedia, CardContent, Checkbox, Container, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import allMovies from "../../data/movies";
-import flatVariations from "../../data/flat_variations";
 import NavigationBar from "../../components/NavigationBar";
-import ProgressStepper from "../../components/ProgressStepperV2";
+import ProgressStepper from "../../components/ProgressStepper";
 import NavigationButtons from "../../components/NavigationButtons";
-import InstructionsTab from "../../components/InstructionsTab";
 import Footer from "../../components/Footer";
+import variations from "../../data/variations";
 
 export default function SelectMovie() {
     const router = useRouter();
-    const { variationId } = router.query;
-    const variation = flatVariations.find((variation) => variation.id === variationId);
     const [selectedMovie, setSelectedMovie] = React.useState(0);
     const movies = allMovies.slice(0,6);
+    const { variationId } = router.query;
+    const perRow = Object.values(variations);
+    const perCol = perRow.map((row) => {return Object.values(row)});
+    const flatVariations = perCol.flat();
+    const variation = flatVariations.find((variation) => variation.id === variationId);
 
-    
     const handleNext = () => {
         if (selectedMovie) {
-            router.push(`../options?movieId=${selectedMovie}&variationId=${variationId}`);
+            router.push(`/theatre?movieId=${selectedMovie}`);
         }
     };
 
@@ -31,9 +32,6 @@ export default function SelectMovie() {
 
             {/* Barra de progreso */}
             <ProgressStepper activeStep={0} />
-            
-            {/* Instrucciones */}
-           <InstructionsTab variation={variation}/>
 
             {/* Selección de películas */}
             <Typography variant="h5" style={{ marginBottom: "20px" }}>

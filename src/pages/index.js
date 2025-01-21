@@ -1,18 +1,15 @@
 import React, { useState } from "react";
 import { Grid, Card, CardActionArea, CardMedia, CardContent, Checkbox, Container, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import allMovies from "../data/movies";
-import NavigationBar from "../components/NavigationBar";
-import ProgressStepper from "../components/ProgressStepper";
-import NavigationButtons from "../components/NavigationButtons";
-import Footer from "../components/Footer";
+import VariationLink from "../components/VariationLink"
+import flatVariations from "@/data/flat_variations";
 
-export default function SelectMovie() {
-    // const [selectedMovie, setSelectedMovie] = useState(null);
+
+export default function Welcome() {
+
     const router = useRouter();
-    const [selectedMovie, setSelectedMovie] = React.useState(0);
-    const movies = allMovies.slice(0,6);
-
+    // Acá elegir las variaciones que de hecho pedimos
+    
     const handleNext = () => {
         if (selectedMovie) {
             router.push(`/theatre?movieId=${selectedMovie}`);
@@ -21,44 +18,15 @@ export default function SelectMovie() {
 
     return (
         <>
-        <Container style={{ marginTop: "80px" }}>
-            {/* Barra superior */}
-            <NavigationBar />
+            <Container>
+            <Typography variant="h3">Welcome</Typography>
+            </Container>
+            
+            {flatVariations.map((variation, index) => (
+                <VariationLink variation={variation} taskNumber={index+1} enabled={true}/>
+            ))}
+            
 
-            {/* Barra de progreso */}
-            <ProgressStepper activeStep={0} />
-
-            {/* Selección de películas */}
-            <Typography variant="h5" style={{ marginBottom: "20px" }}>
-                Select Movie
-            </Typography>
-            <Grid container spacing={3}>
-                {movies.map((movie) => (
-                    <Grid item xs={12} sm={6} md={2} key={movie.id}>
-                        <Card>
-                          <CardActionArea
-                            onClick={() => setSelectedMovie(movie.id)}
-                            data-active={selectedMovie === movie.id ? '' : undefined}
-                            sx={{
-                              height: '100%',
-                              '&[data-active]': {border: "2px solid orange", backgroundColor: 'action.selected','&:hover': {backgroundColor: 'action.selectedHover',},},
-                              }}
-                          >
-                            <CardMedia component="img" height="280" image={movie.image} alt={movie.title} />
-                            <CardContent>
-                                <Typography variant="h6">{movie.title}</Typography>
-                            </CardContent>
-                          </CardActionArea>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-
-            {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} prevDisabled={true} nextDisabled={!selectedMovie} />
-        </Container>
-        {/* Footer */}
-        <Footer />
         </>
     );
 }

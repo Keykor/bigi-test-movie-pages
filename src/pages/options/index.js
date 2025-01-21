@@ -19,6 +19,7 @@ import NavigationButtons from "../../components/NavigationButtons";
 import InstructionsTab from "../../components/InstructionsTab";
 import Head from "next/head";
 import Footer from "../../components/Footer";
+import flatVariations from "../../data/flat_variations";
 
 // Deshabilitar SSR para componentes de Leaflet
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
@@ -32,9 +33,10 @@ const seatStructure = {
 
 export default function SelectOptions() {
   const router = useRouter();
-  const { movieId } = router.query;
+  const { movieId, variationId } = router.query;
 
   const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
+  const variation = flatVariations.find((variation) => variation.id === variationId);
   const [selectedTheatre, setSelectedTheatre] = useState(null);
   const [maxDistance, setMaxDistance] = useState(5);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -75,6 +77,10 @@ export default function SelectOptions() {
       <Container style={{ marginTop: "80px" }}>
         <NavigationBar />
         <ProgressStepper activeStep={1} />
+        
+        {/* Instrucciones */}
+       <InstructionsTab variation={variation}/>
+        
         <InstructionsTab movie="Inspigining" date="Today" distance="<3km" time="15:01" seat="E11"/>
         <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
           {selectedMovie && <SelectionCard title={selectedMovie.title} image={selectedMovie.image} />}
