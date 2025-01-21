@@ -1,32 +1,28 @@
 import React, { useEffect } from "react";
 import { Marker, Popup } from "react-leaflet";
+import { Button } from "@mui/material";
 
 const CustomMarker = ({ position, name, distance, onSelect, iconUrl }) => {
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const L = require("leaflet");
-
-      L.Icon.Default.mergeOptions({
-        iconUrl: iconUrl || "/images/marker-icon-2x.png",
-        shadowUrl: "/images/marker-shadow.png",
-        iconSize: [24, 40],
-        shadowSize: [40, 60],
-        iconAnchor: [10, 40],
-        shadowAnchor: [10, 60],
-      });
-    }
-  }, [iconUrl]);
+  
+  var localIcon = L.icon({
+    iconUrl: '/images/marker-icon-2x.png',
+    shadowUrl: '/images/marker-shadow.png',
+    iconSize:     [24, 40],
+    shadowSize:   [40, 60],
+    iconAnchor:   [10, 40],
+    shadowAnchor: [10, 60]
+ });  
 
   return (
-    <Marker position={position}>
+    <Marker position={position} icon={localIcon}>
       <Popup>
         <div>
-          <h4>{name}</h4>
-          <p>{distance}</p>
+          <h3 style={{ marginBottom: "5px" }}>{name}</h3>
+          <p style={{ margin: "5px 0" }}>{distance}</p>
           {onSelect && (
-            <button onClick={onSelect} style={{ marginTop: "5px" }}>
+            <Button onClick={onSelect} style={{ marginTop: "5px" }} variant="contained" size="small">
               Select
-            </button>
+            </Button>
           )}
         </div>
       </Popup>
