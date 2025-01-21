@@ -16,6 +16,7 @@ import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepperV2";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
+import InstructionsTab from "../../components/InstructionsTab";
 import Head from "next/head";
 import Footer from "../../components/Footer";
 
@@ -74,6 +75,7 @@ export default function SelectOptions() {
       <Container style={{ marginTop: "80px" }}>
         <NavigationBar />
         <ProgressStepper activeStep={1} />
+        <InstructionsTab movie="Inspigining" date="Today" distance="<3km" time="15:01" seat="E11"/>
         <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
           {selectedMovie && <SelectionCard title={selectedMovie.title} image={selectedMovie.image} />}
         </Box>
