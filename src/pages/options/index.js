@@ -55,12 +55,12 @@ export default function SelectOptions() {
 
   const handleNext = () => {
     
-      router.push(`/filtered_options?movieId=${movieId}&timespan=${selectedTimespan}&seatArea=${selectedSeatArea.row+"|"+selectedSeatArea.col}&date=${selectedDate}&maxDistance=${maxDistance}`);
+      router.push(`/filtered_options?movieId=${movieId}&timespan=${selectedTimespan}&seatArea=${selectedSeatArea.row+"|"+selectedSeatArea.col}&date=${selectedDate}&maxDistance=${maxDistance}&variationId=${variationId}`);
 
   };
 
   const handleBack = () => {
-    router.push(`/v2`);
+    router.push(`/v2?variationId=${variationId}`);
   };
 
   return (
@@ -79,9 +79,8 @@ export default function SelectOptions() {
         <ProgressStepper activeStep={1} />
         
         {/* Instrucciones */}
-       <InstructionsTab variation={variation}/>
+        {variation && <InstructionsTab variation={variation}/>}
         
-        <InstructionsTab movie="Inspigining" date="Today" distance="<3km" time="15:01" seat="E11"/>
         <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
           {selectedMovie && <SelectionCard title={selectedMovie.title} image={selectedMovie.image} />}
         </Box>
@@ -170,7 +169,7 @@ export default function SelectOptions() {
                    )}
                    <Box style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
                        <Button
-                          key={area.row}
+                          key={areaIndex}
                           style={{
                             width: "40px",
                             height: "40px",

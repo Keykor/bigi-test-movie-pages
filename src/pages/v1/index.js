@@ -6,21 +6,19 @@ import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
-import variations from "../../data/variations";
+import InstructionsTab from "../../components/InstructionsTab";
+import flatVariations from "../../data/flat_variations";
 
 export default function SelectMovie() {
     const router = useRouter();
     const [selectedMovie, setSelectedMovie] = React.useState(0);
     const movies = allMovies.slice(0,6);
     const { variationId } = router.query;
-    const perRow = Object.values(variations);
-    const perCol = perRow.map((row) => {return Object.values(row)});
-    const flatVariations = perCol.flat();
     const variation = flatVariations.find((variation) => variation.id === variationId);
 
     const handleNext = () => {
         if (selectedMovie) {
-            router.push(`/theatre?movieId=${selectedMovie}`);
+            router.push(`/theatre?movieId=${selectedMovie}&variationId=${variationId}`);
         }
     };
 
@@ -32,6 +30,9 @@ export default function SelectMovie() {
 
             {/* Barra de progreso */}
             <ProgressStepper activeStep={0} />
+
+            {/* Instrucciones */}
+            {variation && <InstructionsTab variation={variation}/>}
 
             {/* Selección de películas */}
             <Typography variant="h5" style={{ marginBottom: "20px" }}>

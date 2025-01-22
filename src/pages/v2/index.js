@@ -16,6 +16,7 @@ export default function SelectMovie() {
     const [selectedMovie, setSelectedMovie] = React.useState(0);
     const movies = allMovies.slice(0,6);
 
+    useEffect(() => {}, [variation]) // All the magic is here
     
     const handleNext = () => {
         if (selectedMovie) {
@@ -33,7 +34,7 @@ export default function SelectMovie() {
             <ProgressStepper activeStep={0} />
             
             {/* Instrucciones */}
-           <InstructionsTab variation={variation}/>
+            {variation && <InstructionsTab variation={variation}/>}
 
             {/* Selección de películas */}
             <Typography variant="h5" style={{ marginBottom: "20px" }}>

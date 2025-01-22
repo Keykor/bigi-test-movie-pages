@@ -8,35 +8,41 @@ import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
+import InstructionsTab from "../../components/InstructionsTab";
+import flatVariations from "../../data/flat_variations";
 
 
 export default function SelectDate() {
     const router = useRouter();
-    const { movieId, theatreId } = router.query;
+    const { movieId, theatreId, variationId } = router.query;
 
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
     const [selectedDate, setSelectedDate] = useState(null);
+      const variation = flatVariations.find((variation) => variation.id === variationId);
 
     const handleNext = () => {
         if (selectedDate) {
             console.log(`Navigating to show page with date: ${selectedDate}`);
-            router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&date=${selectedDate}`);
+            router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&date=${selectedDate}&variationId=${variationId}`);
         } else {
             console.error("No date selected!");
         }
     };
 
-    const handleBack = () => { router.push(`/theatre?movieId=${movieId}`); };
+    const handleBack = () => { router.push(`/theatre?movieId=${movieId}&variationId=${variationId}`); };
 
     return (
         <>
-        <Container style={{ marginTop: "80px" }}>
+        <Container style={{ marginTop: "80px"}}>
             {/* Barra superior */}
             <NavigationBar />
 
             {/* Barra de progreso */}
             <ProgressStepper activeStep={2} />
+
+            {/* Instrucciones */}
+            {variation && <InstructionsTab variation={variation}/>}
 
             {/* Película y teatro seleccionados */}
             <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
@@ -48,6 +54,8 @@ export default function SelectDate() {
             <Typography variant="h5" style={{ marginBottom: "20px" }}>
                 Select Date
             </Typography>
+            {/* Extra wrapping Box to prevent overlapping instructions with next button */}
+            <Box style={{ minHeight: "200px" }}> 
             <Box style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
                 {Object.keys(selectedTheatre?.schedules || {}).map((date) => (
                     <Button
@@ -59,6 +67,7 @@ export default function SelectDate() {
                         {date}
                     </Button>
                 ))}
+                </Box>
             </Box>
 
             {/* Botones de navegación */}

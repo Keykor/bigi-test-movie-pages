@@ -8,16 +8,19 @@ import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
+import InstructionsTab from "../../components/InstructionsTab";
+import flatVariations from "../../data/flat_variations";
 import {useUserFlow} from "@/context/UserFlowProvider";
 
 export default function SelectShow() {
     const router = useRouter();
-    const { movieId, theatreId, date } = router.query;
+    const { movieId, theatreId, date, variationId } = router.query;
     const { addSelectedCinemaAndIncrementIteration } = useUserFlow();
 
     // Buscar los datos seleccionados
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
+    const variation = flatVariations.find((variation) => variation.id === variationId);
 
     // Obtener horarios disponibles
     const showTimes = selectedTheatre?.schedules?.[date]
@@ -31,13 +34,13 @@ export default function SelectShow() {
         if (selectedTime) {
             addSelectedCinemaAndIncrementIteration(movieId, theatreId, date, selectedTime);
             router.push(
-                `/seat?movieId=${movieId}&theatreId=${theatreId}&date=${date}&time=${selectedTime}`
+                `/seat?movieId=${movieId}&theatreId=${theatreId}&date=${date}&time=${selectedTime}&variationId=${variationId}`
             );
         }
     }
 
     const handleBack = () => {
-        router.push(`/date?movieId=${movieId}&theatreId=${theatreId}`);
+        router.push(`/date?movieId=${movieId}&theatreId=${theatreId}&variationId=${variationId}`);
     }
 
     return (
@@ -48,6 +51,9 @@ export default function SelectShow() {
 
             {/* Barra de progreso */}
             <ProgressStepper activeStep={3} />
+
+            {/* Instrucciones */}
+            {variation && <InstructionsTab variation={variation}/>}
 
             {/* Selección actual */}
             <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
@@ -61,6 +67,8 @@ export default function SelectShow() {
                 Select Show Time
             </Typography>
 
+            {/* Extra wrapping Box to prevent overlapping instructions with next button */}
+            <Box style={{ minHeight: "200px" }}> 
             {/* Lista de horarios */}
             {showTimes.length > 0 ? (
                 <Grid container spacing={2} style={{ marginBottom: "20px" }}>
@@ -82,6 +90,7 @@ export default function SelectShow() {
                     No show times available for the selected date.
                 </Typography>
             )}
+            </Box>
 
             {/* Botones de navegación */}
             <NavigationButtons onNext={handleNext} nextDisabled={!selectedTime} onBack={handleBack} />

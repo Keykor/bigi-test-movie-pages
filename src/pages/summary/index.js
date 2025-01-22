@@ -7,14 +7,17 @@ import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import Footer from "../../components/Footer";
+import InstructionsTab from "../../components/InstructionsTab";
+import flatVariations from "../../data/flat_variations";
 
 
 export default function Summary() {
     const router = useRouter();
-    const { movieId, theatreId, date, time, seat } = router.query;
+    const { movieId, theatreId, date, time, seat, variationId } = router.query;
 
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
+    const variation = flatVariations.find((variation) => variation.id === variationId);
 
     // Cálculos de precios
     const ticketPrice = 15.0;
@@ -22,7 +25,7 @@ export default function Summary() {
     const totalPrice = ticketPrice + serviceCharge;
 
     const handleBack = () => {
-        router.push(`/seat?movieId=${movieId}&theatreId=${theatreId}&date=${date}&time=${time}`);
+        router.push(`/seat?movieId=${movieId}&theatreId=${theatreId}&date=${date}&time=${time}&variationId=${variationId}`);
     };
 
     const handleSubmit = () => {
@@ -39,6 +42,9 @@ export default function Summary() {
 
             {/* Barra de progreso */}
             <ProgressStepper activeStep={5} />
+
+            {/* Instrucciones */}
+            {variation && <InstructionsTab variation={variation}/>}
 
             {/* Película, teatro, fecha y hora seleccionados */}
             <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>

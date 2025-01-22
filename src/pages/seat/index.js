@@ -8,6 +8,8 @@ import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
 import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
+import InstructionsTab from "../../components/InstructionsTab";
+import flatVariations from "../../data/flat_variations";
 import {useUserFlow} from "@/context/UserFlowProvider";
 
 const seatStructure = {
@@ -75,7 +77,8 @@ const seatStructure = {
 
 export default function SelectSeats() {
     const router = useRouter();
-    const { movieId, theatreId, date, time } = router.query;
+    const { movieId, theatreId, date, time, variationId } = router.query;
+    const variation = flatVariations.find((variation) => variation.id === variationId);
 
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
@@ -99,6 +102,7 @@ export default function SelectSeats() {
                     theatreId,
                     date,
                     time,
+                    variationId,
                     seat: selectedSeat,
                 },
             });
@@ -106,7 +110,7 @@ export default function SelectSeats() {
     };
 
     const handleBack = () => {
-        router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&date=${date}`);
+        router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&date=${date}&variationId=${variationId}`);
     }
 
     return (
@@ -117,6 +121,9 @@ export default function SelectSeats() {
 
             {/* Barra de progreso */}
             <ProgressStepper activeStep={4} />
+
+            {/* Instrucciones */}
+            {variation && <InstructionsTab variation={variation}/>}
 
             {/* Película, teatro, fecha y hora seleccionados */}
             <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>

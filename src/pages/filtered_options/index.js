@@ -19,6 +19,7 @@ import NavigationButtons from "../../components/NavigationButtons";
 import InstructionsTab from "../../components/InstructionsTab";
 import Head from "next/head";
 import Footer from "../../components/Footer";
+import flatVariations from "../../data/flat_variations";
 
 export default function SelectFilteredOption() {
 
@@ -33,9 +34,10 @@ const options = [
 ];
 
 const router = useRouter();
-const { timespan, seatArea, date, maxDistance, movieId } = router.query;
+const { timespan, seatArea, date, maxDistance, movieId, variationId } = router.query;
 const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
 const [selectedOption, setSelectedOption] = useState(null);
+const variation = flatVariations.find((variation) => variation.id === variationId);
 
   const handleNext = () => {
     if (selectedTheatre) {
@@ -44,7 +46,7 @@ const [selectedOption, setSelectedOption] = useState(null);
   };
 
   const handleBack = () => {
-    router.push(`/options`);
+    router.push(`/options?variationId=${variationId}`);
   };
 
   return (
@@ -61,7 +63,10 @@ const [selectedOption, setSelectedOption] = useState(null);
       <Container style={{ marginTop: "80px" }}>
         <NavigationBar />
         <ProgressStepper activeStep={2} />
-        <InstructionsTab/>
+        
+        {/* Instrucciones */}
+        {variation && <InstructionsTab variation={variation}/>}
+        
         <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
           {selectedMovie && <SelectionCard title={selectedMovie.title} image={selectedMovie.image} />}
         </Box>

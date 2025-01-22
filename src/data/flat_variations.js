@@ -1,6 +1,7 @@
     const flatVariations = [
             {
                 id: "0",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -13,6 +14,7 @@
             },
             {
                 id: "1",
+                version: "v2",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -26,6 +28,7 @@
             },
             {
                 id: "2",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -40,6 +43,7 @@
             },
             {
                 id: "3",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -55,6 +59,7 @@
             },
             {
                 id: "4",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -72,6 +77,7 @@
 
             {
                 id: "5",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -84,6 +90,7 @@
             },
             {
                 id: "6",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -97,6 +104,7 @@
             },
             {
                 id: "7",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -111,6 +119,7 @@
             },
             {
                 id: "8",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -126,6 +135,7 @@
             },
             {
                 id: "9",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -142,6 +152,7 @@
             },
             {
                 id: "10",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -154,6 +165,7 @@
             },
             {
                 id: "11",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -167,6 +179,7 @@
             },
             {
                 id: "12",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -181,6 +194,7 @@
             },
             {
                 id: "13",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -196,6 +210,24 @@
             },
             {
                 id: "14",
+                version: "v1",
+                movie: "4",
+                seat: "E12",
+                distance: "<3km",
+                time: "19:00",
+                date: "today",
+                iterationLimit: 4,
+                rules: {
+                    0: { availableSeats: ["D11"] },
+                    1: { availableSeats: ["E11"] },
+                    2: { availableSeats: ["F12"] },
+                    3: { availableSeats: ["D12"] },
+                    4: { availableSeats: ["E12"] },
+                }
+            },
+            {
+                id: "15",
+                version: "v2",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
@@ -211,9 +243,6 @@
                 }
             }
 
-    ]
+    ];
 
-
-
-
-export default flatVariations
+export default flatVariations;
