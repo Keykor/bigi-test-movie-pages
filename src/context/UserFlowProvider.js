@@ -10,13 +10,6 @@ export const UserFlowProvider = ({ children }) => {
 
     const [iterationConfig, setIterationConfig] = useState(null);
 
-    useEffect(() => {
-        const variationGroup = variations[Math.ceil(Math.random() * Object.keys(variations).length)];
-        const selectedVariation = variationGroup[Math.floor(Math.random() * Object.keys(variationGroup).length)];
-        setIterationConfig(selectedVariation);
-        console.log("Selected Variation Config:", selectedVariation);
-    }, []);
-
     const getAvailableSeats = (movieId, theatreId, date, time) => {
         console.log(`Getting seats for movie ${movieId}, theatre ${theatreId}, iteration ${userFlow.iteration}`);
         if (!iterationConfig) {

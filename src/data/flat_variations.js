@@ -14,7 +14,7 @@
             },
             {
                 id: "1",
-                version: "v2",
+                version: "v1",
                 movie: "4",
                 seat: "E12",
                 distance: "<3km",
