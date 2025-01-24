@@ -10,12 +10,13 @@ import SelectionCard from "../../components/SelectionCard";
 import Footer from "../../components/Footer";
 import InstructionsTab from "../../components/InstructionsTab";
 import flatVariations from "../../data/flat_variations";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 
 export default function Summary() {
     const router = useRouter();
     const { movieId, theatreId, scheduleId, time, seat, variationId } = router.query;
-
+    const { stopExperiment } = useEventTracker();
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
     const selectedSchedule = schedules.find((schedule) => schedule.id === parseInt(scheduleId));
@@ -27,7 +28,9 @@ export default function Summary() {
     const totalPrice = ticketPrice + serviceCharge;
 
     const handleBack = () => {
-        router.push(`/seat?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&time=${time}&variationId=${variationId}`);
+        let nextPath = `/seat?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&time=${time}&variationId=${variationId}`
+        capturePageData(router.pathname,nextPath);
+        router.push(nextPath);
     };
 
     const handleSubmit = () => {
@@ -35,6 +38,7 @@ export default function Summary() {
         const variations = JSON.parse(localStorage.getItem('completedVariations'));
         variations.push(variationId);
         localStorage.setItem('completedVariations', JSON.stringify(variations));
+        stopExperiment(router.pathname,`/`);
         router.push("/"); // O redirige a una página de confirmación
     };
 
