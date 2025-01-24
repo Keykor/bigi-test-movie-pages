@@ -8,6 +8,7 @@ import ProgressStepper from "../../components/ProgressStepperV2";
 import NavigationButtons from "../../components/NavigationButtons";
 import InstructionsTab from "../../components/InstructionsTab";
 import Footer from "../../components/Footer";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 export default function SelectMovie() {
     const router = useRouter();
@@ -18,11 +19,20 @@ export default function SelectMovie() {
 
     useEffect(() => {}, [variation]) // All the magic is here
     
+    const { capturePageData, stopExperiment } = useEventTracker();
     const handleNext = () => {
         if (selectedMovie) {
-            router.push(`../options?movieId=${selectedMovie}&variationId=${variationId}`);
+            let nextPath = `../options?movieId=${selectedMovie}&variationId=${variationId}`
+            capturePageData(router.pathname,nextPath);
+            router.push(nextPath);
         }
     };
+
+    const handleBack = () => {
+        stopExperiment();
+        router.push("/");
+    }
+
 
     return (
         <>
@@ -63,7 +73,7 @@ export default function SelectMovie() {
             </Grid>
 
             {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} prevDisabled={true} nextDisabled={!selectedMovie} />
+            <NavigationButtons onNext={handleNext} onBack={handleBack} prevDisabled={true} nextDisabled={!selectedMovie} />
         </Container>
         {/* Footer */}
         <Footer />

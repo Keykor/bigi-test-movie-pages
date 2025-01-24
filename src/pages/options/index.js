@@ -20,6 +20,7 @@ import InstructionsTab from "../../components/InstructionsTab";
 import Head from "next/head";
 import Footer from "../../components/Footer";
 import flatVariations from "../../data/flat_variations";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 // Deshabilitar SSR para componentes de Leaflet
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
@@ -48,19 +49,23 @@ export default function SelectOptions() {
 
   const handleDistanceChange = (distance) => setMaxDistance(distance);
 
+  const { capturePageData } = useEventTracker();
+
   const filteredTheatres = theatres.filter((theatre) => {
     const distanceInKm = parseFloat(theatre.distance.split(" ")[0]);
     return distanceInKm <= maxDistance;
   });
 
   const handleNext = () => {
-    
-      router.push(`/filtered_options?movieId=${movieId}&timespan=${selectedTimespan}&seatArea=${selectedSeatArea.row+"|"+selectedSeatArea.col}&date=${selectedDate}&maxDistance=${maxDistance}&variationId=${variationId}`);
-
+      let nextPath = `/filtered_options?movieId=${movieId}&timespan=${selectedTimespan}&seatArea=${selectedSeatArea.row+"|"+selectedSeatArea.col}&date=${selectedDate}&maxDistance=${maxDistance}&variationId=${variationId}`
+      capturePageData(router.pathname,nextPath);
+      router.push(nextPath);
   };
 
   const handleBack = () => {
-    router.push(`/v2?variationId=${variationId}`);
+    let nextPath = `/v2?variationId=${variationId}`
+    capturePageData(router.pathname,nextPath);
+    router.push(nextPath);
   };
 
   return (

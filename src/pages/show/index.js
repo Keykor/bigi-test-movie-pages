@@ -12,6 +12,7 @@ import Footer from "../../components/Footer";
 import InstructionsTab from "../../components/InstructionsTab";
 import flatVariations from "../../data/flat_variations";
 import {useUserFlow} from "@/context/UserFlowProvider";
+import {useEventTracker} from "@/context/EventTrackerProvider";
 
 export default function SelectShow() {
     const router = useRouter();
@@ -29,18 +30,22 @@ export default function SelectShow() {
 
     const [selectedTime, setSelectedTime] = useState(null);
 
+    const { capturePageData } = useEventTracker();
+
     // Manejo de redirección
     const handleNext = () => {
         if (selectedTime) {
             addSelectedCinemaAndIncrementIteration(movieId, theatreId, scheduleId, selectedTime);
-            router.push(
-                `/seat?movieId=${movieId}&theatreId=${theatreId}&time=${selectedTime}&scheduleId=${scheduleId}&variationId=${variationId}`
-            );
+            let nextPath = `/seat?movieId=${movieId}&theatreId=${theatreId}&time=${selectedTime}&scheduleId=${scheduleId}&variationId=${variationId}`
+            capturePageData(router.pathname,nextPath);
+            router.push(nextPath);
         }
     }
 
     const handleBack = () => {
-        router.push(`/date?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`);
+        let nextPath = `/date?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`
+        capturePageData(router.pathname,nextPath);
+        router.push(nextPath);
     }
 
     return (

@@ -24,6 +24,8 @@ import Head from "next/head";
 import Footer from "../../components/Footer";
 import InstructionsTab from "../../components/InstructionsTab";
 import flatVariations from "../../data/flat_variations";
+import { useEventTracker } from "@/context/EventTrackerProvider";
+import next from "next";
 
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false });
@@ -38,6 +40,7 @@ export default function SelectTheatre() {
   const [maxDistance, setMaxDistance] = useState(5);
   const variation = flatVariations.find((variation) => variation.id === variationId);
 
+  const { capturePageData } = useEventTracker();
 
   const handleDistanceChange = (event) => {
     setMaxDistance(event.target.value);
@@ -50,12 +53,16 @@ export default function SelectTheatre() {
 
   const handleNext = () => {
     if (selectedTheatre) {
-      router.push(`/date?movieId=${movieId}&theatreId=${selectedTheatre}&variationId=${variationId}`);
+      let nextPath = `/date?movieId=${movieId}&theatreId=${selectedTheatre}&variationId=${variationId}`
+      capturePageData(router.pathname,nextPath);
+      router.push(nextPath);
     }
   };
 
   const handleBack = () => {
-    router.push(`/`);
+    let nextPath = `/movie?variationId=${variationId}`
+    capturePageData(router.pathname,nextPath);
+    router.push(nextPath);
   };
 
   return (

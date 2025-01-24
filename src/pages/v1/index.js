@@ -8,6 +8,7 @@ import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
 import InstructionsTab from "../../components/InstructionsTab";
 import flatVariations from "../../data/flat_variations";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 export default function SelectMovie() {
     const router = useRouter();
@@ -16,11 +17,20 @@ export default function SelectMovie() {
     const { variationId } = router.query;
     const variation = flatVariations.find((variation) => variation.id === variationId);
 
+    const { capturePageData, stopExperiment } = useEventTracker();
     const handleNext = () => {
         if (selectedMovie) {
-            router.push(`/theatre?movieId=${selectedMovie}&variationId=${variationId}`);
+            let nextPath = `/theatre?movieId=${selectedMovie}&variationId=${variationId}`
+            capturePageData(router.pathname,nextPath);
+            router.push(nextPath);
         }
     };
+
+    const handleBack = () => {
+        stopExperiment();
+        router.push("/");
+    }
+
 
     return (
         <>
@@ -61,7 +71,7 @@ export default function SelectMovie() {
             </Grid>
 
             {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} prevDisabled={true} nextDisabled={!selectedMovie} />
+            <NavigationButtons onNext={handleNext} onBack={handleBack} prevDisabled={true} nextDisabled={!selectedMovie} />
         </Container>
         {/* Footer */}
         <Footer />
