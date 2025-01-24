@@ -10,7 +10,7 @@ export default function NavigationButtons({ onNext, onBack, prevDisabled = false
             style={{
                 display: "flex",
                 justifyContent: "space-between",
-                marginTop: "30px",
+                marginTop: "20px",
             }}
         >
             <Button

@@ -3,6 +3,7 @@ import { Button, Container, Typography, Box } from "@mui/material";
 import { useRouter } from "next/router";
 import movies from "../../data/movies";
 import theatres from "../../data/theatres";
+import schedules from "../../data/schedules";
 import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
@@ -19,12 +20,13 @@ export default function SelectDate() {
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
     const [selectedDate, setSelectedDate] = useState(null);
-      const variation = flatVariations.find((variation) => variation.id === variationId);
+    const [scheduleId, setScheduleId] = useState(null);
+    const variation = flatVariations.find((variation) => variation.id === variationId);
+    const todayString = new Date().toLocaleString("en-US", { month: "short", day: "2-digit" });
 
     const handleNext = () => {
-        if (selectedDate) {
-            console.log(`Navigating to show page with date: ${selectedDate}`);
-            router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&date=${selectedDate}&variationId=${variationId}`);
+        if (scheduleId) {
+            router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`);
         } else {
             console.error("No date selected!");
         }
@@ -57,21 +59,21 @@ export default function SelectDate() {
             {/* Extra wrapping Box to prevent overlapping instructions with next button */}
             <Box style={{ minHeight: "200px" }}> 
             <Box style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-                {Object.keys(selectedTheatre?.schedules || {}).map((date) => (
+                {schedules.map((schedule) => (
                     <Button
-                        key={date}
-                        variant={selectedDate === date ? "contained" : "outlined"}
-                        color={selectedDate === date ? "primary" : "default"}
-                        onClick={() => setSelectedDate(date)}
+                        key={schedule.id}
+                        variant={scheduleId === schedule.id ? "contained" : "outlined"}
+                        color={scheduleId === schedule.id ? "primary" : "default"}
+                        onClick={() => setScheduleId(schedule.id)}
                     >
-                        {date}
+                        {schedule.date === todayString ? "TODAY" : schedule.date}
                     </Button>
                 ))}
                 </Box>
             </Box>
 
             {/* Botones de navegación */}
-            <NavigationButtons onNext={handleNext} nextDisabled={!selectedDate} onBack={handleBack} />
+            <NavigationButtons onNext={handleNext} nextDisabled={!scheduleId} onBack={handleBack} />
         </Container>
         {/* Footer */}
         <Footer />

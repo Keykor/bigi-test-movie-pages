@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Container, Box, Button, Typography } from "@mui/material";
+import { Container, Box, Button, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import movies from "../../data/movies";
 import theatres from "../../data/theatres";
+import schedules from "../../data/schedules";
 import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
@@ -77,15 +78,16 @@ const seatStructure = {
 
 export default function SelectSeats() {
     const router = useRouter();
-    const { movieId, theatreId, date, time, variationId } = router.query;
+    const { movieId, theatreId, scheduleId, time, variationId } = router.query;
     const variation = flatVariations.find((variation) => variation.id === variationId);
 
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
+    const selectedSchedule = schedules.find((schedule) => schedule.id === parseInt(scheduleId));
     const [selectedSeat, setSelectedSeat] = useState(null);
 
     const { getAvailableSeats } = useUserFlow();
-    const availableSeats = getAvailableSeats(movieId, theatreId, date, time);
+    const availableSeats = getAvailableSeats(movieId, theatreId, scheduleId, time);
 
     const handleSeatClick = (seatId) => {
         if (availableSeats.includes(seatId)) {
@@ -100,7 +102,7 @@ export default function SelectSeats() {
                 query: {
                     movieId,
                     theatreId,
-                    date,
+                    scheduleId,
                     time,
                     variationId,
                     seat: selectedSeat,
@@ -110,7 +112,7 @@ export default function SelectSeats() {
     };
 
     const handleBack = () => {
-        router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&date=${date}&variationId=${variationId}`);
+        router.push(`/show?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`);
     }
 
     return (
@@ -129,92 +131,97 @@ export default function SelectSeats() {
             <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
                 {selectedMovie && <SelectionCard title={selectedMovie.title} image={selectedMovie.image} />}
                 {selectedTheatre && <SelectionCard title={selectedTheatre.name} image={selectedTheatre.image} />}
-                {date && <SelectionCard title={date} />}
+                {selectedSchedule && <SelectionCard title={selectedSchedule.date} />}
                 {time && <SelectionCard title={time} />}
             </Box>
 
-            <Typography variant="h5" style={{ marginBottom: "20px" }}>
+            <Typography variant="h5" style={{ marginBottom: "0px" }}>
                 Select Seat
             </Typography>
 
             {/* Grilla de bloques */}
-            <Box style={{ display: "grid", gridTemplateRows: "repeat(3, auto)", gap: "20px", justifyContent: "center" }}>
-                {/* Grilla de letras de columnas */}
-                <Box style={{ display: "grid", gridTemplateColumns: "repeat(9, 1fr)", justifyItems: "center" }}>
-                    {Array.from({ length: 9 }, (_, index) => String.fromCharCode(65 + index)).map((col) => (
-                        <Typography key={col} style={{ fontWeight: "bold" }}>
-                            {col}
-                        </Typography>
-                    ))}
-                </Box>
-                {Object.values(seatStructure).map((section, sectionIndex) => (
-                    <Box key={sectionIndex} style={{ display: "grid", gridTemplateColumns: "repeat(3, auto)", gap: "20px" }}>
-                        {Object.values(section).map((block, blockIndex) => (
-                            <Box key={blockIndex} style={{ display: "grid", gap: "10px" }}>
-                                {block.map((row, rowIndex) => (
-                                    <Box key={rowIndex} style={{ display: "flex", alignItems: "center" }}>
-                                        {blockIndex === 0 && (
-                                            <Typography style={{ width: "30px", textAlign: "right", marginRight: "5px" }}>
-                                                {row[0].slice(1)}
-                                            </Typography>
-                                        )}
-                                        <Box style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
-                                            {row.map((seatId) => (
-                                                <Button
-                                                    key={seatId}
-                                                    style={{
-                                                        width: "40px",
-                                                        height: "40px",
-                                                        backgroundColor: availableSeats.includes(seatId)
-                                                            ? selectedSeat === seatId
-                                                                ? "green" // Seleccionado
-                                                                : "white" // Disponible
-                                                            : "orange", // Ocupado
-                                                        border: "1px solid black",
-                                                    }}
-                                                    disabled={!availableSeats.includes(seatId)}
-                                                    onClick={() => handleSeatClick(seatId)}
-                                                />
-                                            ))}
-                                        </Box>
-                                    </Box>
-                                ))}
-                            </Box>
+            <Grid container spacing={3}>
+            <Grid item xs={12} sm={8} md={8}>
+                <Box style={{ display: "grid", gridTemplateRows: "repeat(3, auto)", gap: "10px", justifyContent: "center" }}>
+                    {/* Grilla de letras de columnas */}
+                    <Box style={{ display: "grid", gridTemplateColumns: "repeat(9, 1fr)", justifyItems: "center", marginLeft: "30px" }}>
+                        {Array.from({ length: 9 }, (_, index) => String.fromCharCode(65 + index)).map((col) => (
+                            <Typography key={col} style={{ fontWeight: "bold" }}>
+                                {col}
+                            </Typography>
                         ))}
                     </Box>
-                ))}
-            </Box>
+                    {Object.values(seatStructure).map((section, sectionIndex) => (
+                        <Box key={sectionIndex} style={{ display: "grid", gridTemplateColumns: "repeat(3, auto)", gap: "20px" }}>
+                            {Object.values(section).map((block, blockIndex) => (
+                                <Box key={blockIndex} style={{ display: "grid", gap: "10px" }}>
+                                    {block.map((row, rowIndex) => (
+                                        <Box key={rowIndex} style={{ display: "flex", alignItems: "center" }}>
+                                            {blockIndex === 0 && (
+                                                <Typography style={{ width: "30px", textAlign: "right", marginRight: "5px" }}>
+                                                    {row[0].slice(1)}
+                                                </Typography>
+                                            )}
+                                            <Box style={{ display: "flex", justifyContent: "center", gap: "5px" }}>
+                                                {row.map((seatId) => (
+                                                    <Button
+                                                        key={seatId}
+                                                        style={{
+                                                            width: "40px",
+                                                            height: "25px",
+                                                            backgroundColor: availableSeats.includes(seatId)
+                                                                ? selectedSeat === seatId
+                                                                    ? "green" // Seleccionado
+                                                                    : "white" // Disponible
+                                                                : "orange", // Ocupado
+                                                            border: "1px solid black",
+                                                            cursor: "pointer"
+                                                        }}
+                                                        disabled={!availableSeats.includes(seatId)}
+                                                        onClick={() => handleSeatClick(seatId)}
+                                                    />
+                                                ))}
+                                            </Box>
+                                        </Box>
+                                    ))}
+                                </Box>
+                            ))}
+                        </Box>
+                    ))}
+                </Box>
+    
+                {/* Indicador de pantalla */}
+                <Box
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#ccc",
+                        height: "40px",
+                        width: "100%",
+                        maxWidth: "500px",
+                        margin: "20px auto",
+                        borderRadius: "4px",
+                    }}
+                >
+                    <Typography style={{ fontWeight: "bold" }}>Screen</Typography>
+                </Box>
+            </Grid>
 
-            {/* Indicador de pantalla */}
-            <Box
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#ccc",
-                    height: "40px",
-                    width: "100%",
-                    maxWidth: "500px",
-                    margin: "20px auto",
-                    borderRadius: "4px",
-                }}
-            >
-                <Typography style={{ fontWeight: "bold" }}>Screen</Typography>
-            </Box>
-
-            <Box style={{ marginTop: "20px", display: "flex", gap: "20px", justifyContent: "center" }}>
-                <Box style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <Grid item xs={12} sm={4} md={4}>
+            <Box style={{ marginTop: "40px", display: "block", gap: "20px", justifyContent: "center" }}>
+                <Box style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "20px" }}>
                     <Box
                         style={{
                             width: "20px",
                             height: "20px",
                             backgroundColor: "orange",
-                            border: "1px solid black",
+                            border: "1px solid black"
                         }}
                     />
                     <Typography>Not available</Typography>
                 </Box>
-                <Box style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <Box style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "20px"  }}>
                     <Box
                         style={{
                             width: "20px",
@@ -225,7 +232,7 @@ export default function SelectSeats() {
                     />
                     <Typography>Available</Typography>
                 </Box>
-                <Box style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <Box style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "20px"  }}>
                     <Box
                         style={{
                             width: "20px",
@@ -237,7 +244,8 @@ export default function SelectSeats() {
                     <Typography>Selected</Typography>
                 </Box>
             </Box>
-
+        </Grid>            
+        </Grid>
 
 
             {/* Botones de navegación */}

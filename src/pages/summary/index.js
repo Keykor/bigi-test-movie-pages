@@ -3,6 +3,7 @@ import { Container, Box, Typography, Button } from "@mui/material";
 import { useRouter } from "next/router";
 import movies from "../../data/movies";
 import theatres from "../../data/theatres";
+import schedules from "../../data/schedules";
 import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
@@ -13,10 +14,11 @@ import flatVariations from "../../data/flat_variations";
 
 export default function Summary() {
     const router = useRouter();
-    const { movieId, theatreId, date, time, seat, variationId } = router.query;
+    const { movieId, theatreId, scheduleId, time, seat, variationId } = router.query;
 
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
+    const selectedSchedule = schedules.find((schedule) => schedule.id === parseInt(scheduleId));
     const variation = flatVariations.find((variation) => variation.id === variationId);
 
     // Cálculos de precios
@@ -25,7 +27,7 @@ export default function Summary() {
     const totalPrice = ticketPrice + serviceCharge;
 
     const handleBack = () => {
-        router.push(`/seat?movieId=${movieId}&theatreId=${theatreId}&date=${date}&time=${time}&variationId=${variationId}`);
+        router.push(`/seat?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&time=${time}&variationId=${variationId}`);
     };
 
     const handleSubmit = () => {
@@ -50,7 +52,7 @@ export default function Summary() {
             <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
                 {selectedMovie && <SelectionCard title={selectedMovie.title} image={selectedMovie.image} />}
                 {selectedTheatre && <SelectionCard title={selectedTheatre.name} image={selectedTheatre.image} />}
-                {date && <SelectionCard title={date} />}
+                {selectedSchedule && <SelectionCard title={selectedSchedule.date} />}
                 {time && <SelectionCard title={time} />}
                 {seat && <SelectionCard title={`Seat: ${seat}`} />}
             </Box>
@@ -75,7 +77,7 @@ export default function Summary() {
                     <strong>Movie Theatre:</strong> {selectedTheatre?.name || "N/A"}
                 </Typography>
                 <Typography variant="body1">
-                    <strong>Date / Time:</strong> {date || "N/A"}, {time || "N/A"}
+                    <strong>Date / Time:</strong> {selectedSchedule?.date || "N/A"}, {time || "N/A"}
                 </Typography>
                 <Typography variant="body1">
                     <strong>Seat:</strong> {seat || "N/A"}

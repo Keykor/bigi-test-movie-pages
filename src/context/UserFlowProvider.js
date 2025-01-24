@@ -1,5 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import variations from "@/data/variations";
+import theatres from "@/data/theatres";
+import schedules from "@/data/schedules";
 const UserFlowContext = createContext();
 
 export const UserFlowProvider = ({ children }) => {
@@ -9,15 +11,27 @@ export const UserFlowProvider = ({ children }) => {
     });
 
     const [iterationConfig, setIterationConfig] = useState(null);
+    
+    const dataIsRight = (movieId, theatreId, scheduleId, time) => {
+        const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
+        const distanceRight = parseFloat(selectedTheatre.distance) < parseFloat(iterationConfig.distance);
+        const movieRight = movieId == iterationConfig.movie;
+        const selectedSchedule = schedules.find((schedule) => schedule.id === parseInt(scheduleId));
+        const todayString = new Date().toLocaleString("en-US", { month: "short", day: "2-digit" });
+        const askedDate = (iterationConfig.date == "today")?todayString:(iterationConfig.date);
+        const dateRight = selectedSchedule?selectedSchedule.date == askedDate:false;
+        return distanceRight && movieRight && dateRight;
+    }
 
-    const getAvailableSeats = (movieId, theatreId, date, time) => {
+    const getAvailableSeats = (movieId, theatreId, scheduleId, time) => {
+        const selectedSchedule = schedules.find((schedule) => schedule.id === parseInt(scheduleId));
         console.log(`Getting seats for movie ${movieId}, theatre ${theatreId}, iteration ${userFlow.iteration}`);
         if (!iterationConfig) {
             console.log("No config available.");
             return [];
         }
-        if (movieId !== iterationConfig.movie) {
-            console.log("Movie mismatch.");
+        if (!dataIsRight(movieId, theatreId, scheduleId, time)) {
+            console.log("Requested conditions not met.");
             return [];
         }
 
@@ -25,7 +39,7 @@ export const UserFlowProvider = ({ children }) => {
             (selection) =>
                 selection.movieId === movieId &&
                 selection.theatreId === theatreId &&
-                selection.date === date &&
+                selection.scheduleId === scheduleId &&
                 selection.time === time
         );
 
@@ -35,14 +49,14 @@ export const UserFlowProvider = ({ children }) => {
         return iterationConfig.rules[targetIteration]?.availableSeats || [];
     };
 
-    const addSelectedCinemaAndIncrementIteration = (movieId, theatreId, date, time) => {
+    const addSelectedCinemaAndIncrementIteration = (movieId, theatreId, scheduleId, time) => {
         if (!iterationConfig) {
             console.log("Skipping: no config available.");
             return;
         }
 
-        if (movieId !== iterationConfig.movie) {
-            console.log("Skipping: movie mismatch.");
+        if (!dataIsRight(movieId, theatreId, scheduleId, time)) {
+            console.log("Skipping: requested conditions not met.");
             return;
         }
 
@@ -50,7 +64,7 @@ export const UserFlowProvider = ({ children }) => {
             (selection) =>
                 selection.movieId === movieId &&
                 selection.theatreId === theatreId &&
-                selection.date === date &&
+                selection.scheduleId === scheduleId &&
                 selection.time === time
         );
 
@@ -60,7 +74,7 @@ export const UserFlowProvider = ({ children }) => {
                 ...prev,
                 visitedCinemas: [
                     ...prev.visitedCinemas,
-                    { movieId, theatreId, date, time, iteration: prev.iteration },
+                    { movieId, theatreId, scheduleId, time, iteration: prev.iteration },
                 ],
                 iteration: prev.iteration + 1,
             }));
@@ -73,9 +87,13 @@ export const UserFlowProvider = ({ children }) => {
         console.log("Updating config:", config);
         setIterationConfig(config);
     };
+    
+    const resetUserFlow = () => {
+        setUserFlow({iteration: 0, visitedCinemas: []});
+    };
 
     return (
-        <UserFlowContext.Provider value={{ userFlow, getAvailableSeats, addSelectedCinemaAndIncrementIteration, setConfig }}>
+        <UserFlowContext.Provider value={{ userFlow, getAvailableSeats, addSelectedCinemaAndIncrementIteration, setConfig, resetUserFlow }}>
             {children}
         </UserFlowContext.Provider>
     );

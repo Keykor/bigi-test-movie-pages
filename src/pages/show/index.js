@@ -3,6 +3,7 @@ import { Container, Box, Typography, Button, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import movies from "../../data/movies";
 import theatres from "../../data/theatres";
+import schedules from "../../data/schedules";
 import NavigationBar from "../../components/NavigationBar";
 import ProgressStepper from "../../components/ProgressStepper";
 import SelectionCard from "../../components/SelectionCard";
@@ -14,33 +15,32 @@ import {useUserFlow} from "@/context/UserFlowProvider";
 
 export default function SelectShow() {
     const router = useRouter();
-    const { movieId, theatreId, date, variationId } = router.query;
+    const { movieId, theatreId, scheduleId, variationId } = router.query;
     const { addSelectedCinemaAndIncrementIteration } = useUserFlow();
 
     // Buscar los datos seleccionados
     const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
+    const selectedSchedule = schedules.find((schedule) => schedule.id === parseInt(scheduleId));
     const variation = flatVariations.find((variation) => variation.id === variationId);
 
     // Obtener horarios disponibles
-    const showTimes = selectedTheatre?.schedules?.[date]
-        ? Object.keys(selectedTheatre.schedules[date])
-        : [];
+    const showTimes = selectedSchedule?selectedSchedule.times:[];
 
     const [selectedTime, setSelectedTime] = useState(null);
 
     // Manejo de redirección
     const handleNext = () => {
         if (selectedTime) {
-            addSelectedCinemaAndIncrementIteration(movieId, theatreId, date, selectedTime);
+            addSelectedCinemaAndIncrementIteration(movieId, theatreId, scheduleId, selectedTime);
             router.push(
-                `/seat?movieId=${movieId}&theatreId=${theatreId}&date=${date}&time=${selectedTime}&variationId=${variationId}`
+                `/seat?movieId=${movieId}&theatreId=${theatreId}&time=${selectedTime}&scheduleId=${scheduleId}&variationId=${variationId}`
             );
         }
     }
 
     const handleBack = () => {
-        router.push(`/date?movieId=${movieId}&theatreId=${theatreId}&variationId=${variationId}`);
+        router.push(`/date?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`);
     }
 
     return (
@@ -59,7 +59,7 @@ export default function SelectShow() {
             <Box style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
                 {selectedMovie && <SelectionCard title={selectedMovie.title} image={selectedMovie.image} />}
                 {selectedTheatre && <SelectionCard title={selectedTheatre.name} image={selectedTheatre.image} />}
-                {date && <SelectionCard title={date} />}
+                {selectedSchedule && <SelectionCard title={selectedSchedule.date} />}
             </Box>
 
             {/* Título */}

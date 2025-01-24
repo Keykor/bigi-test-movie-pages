@@ -17,13 +17,17 @@ const InstructionsTab = ({variation} )  => {
             <Typography>
                 <strong>Movie:</strong> {selectedMovie.title}<br/> 
                 <strong>Date:</strong> {variation.date}<br/>
-                <strong>Theatre Distance:</strong> {variation.distance}<br/>
+                <strong>Theatre Distance:</strong> &lt; {variation.distance}<br/>
                 <strong>Start time:</strong> {variation.time}<br/>
                 <strong>Seat:</strong> {variation.seat}<br/>
             </Typography>
             <Typography variant="body2">
                 <strong>Var ID:</strong> {variation.id} - Seats: 
-                {Object.keys(variation.rules).map((key) => {return <span style={{fontWeight:"bold", marginRight:"5px"}}>S{ variation.rules[key] == [] ? "No": variation.rules[key].availableSeats}</span>})}
+                {Object.keys(variation.rules).map((key) => {
+                    return <span key={key} style={{fontWeight:"bold", marginRight:"5px"}}>
+                    S{ variation.rules[key] == [] ? "No": variation.rules[key].availableSeats}
+                    </span>
+                })}
             </Typography>
           </CardContent>
         </Card>

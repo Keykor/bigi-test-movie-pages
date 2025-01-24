@@ -7,10 +7,11 @@ import { useUserFlow } from "@/context/UserFlowProvider";
 
 const VariationLink = ({ variation, taskNumber, enabled }) => {
   const router = useRouter();
-  const { setConfig } = useUserFlow();
+  const { setConfig, resetUserFlow } = useUserFlow();
   const movie = allMovies.find((movie) => movie.id === parseInt(variation.movie));
   
   const handleNext = () => {
+    resetUserFlow();
     setConfig(variation);
     router.push({
         pathname: variation.version,
