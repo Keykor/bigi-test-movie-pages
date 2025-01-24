@@ -32,7 +32,9 @@ export default function Summary() {
 
     const handleSubmit = () => {
         alert("Booking confirmed!");
-
+        const variations = JSON.parse(localStorage.getItem('completedVariations'));
+        variations.push(variationId);
+        localStorage.setItem('completedVariations', JSON.stringify(variations));
         router.push("/"); // O redirige a una página de confirmación
     };
 

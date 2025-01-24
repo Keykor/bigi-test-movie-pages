@@ -21,8 +21,11 @@ const VariationLink = ({ variation, taskNumber, enabled }) => {
   
   return (
       <Box style={{ gap: "20px", margin: "10px" }}>
-        <Typography variant="h6" style={{ margin: "5px 0" }}>Task {taskNumber} ({variation.version})</Typography>
-        <Typography variant="body1">
+        <Typography variant="h6" style={{ margin: "5px 0", color: enabled?"black":"gray" }}>
+          <span style={{textDecoration: enabled?"initial":"line-through"}} >Task {taskNumber} ({variation.version})</span>
+          {!enabled && " Completed"}
+        </Typography>
+        <Typography variant="body1"  style={{color: enabled?"black":"gray" }}>
           Get a ticket for the movie <strong>{movie.title}</strong> for <strong>{variation.date}</strong> starting at <strong>{variation.time}</strong>, and for the seat <strong>{variation.seat}</strong>
         </Typography>
         {/* Debugging info - remove on deploy*/}

@@ -9,6 +9,7 @@ export default function Welcome() {
 
     const router = useRouter();
     const [variations, setVariations] = useState([]);
+    const [completedVariations, setCompletedVariations] = useState([]);
         
     function shuffleArray(array) {
         for (var i = array.length - 1; i >= 0; i--) {
@@ -26,13 +27,16 @@ export default function Welcome() {
             shuffleArray(v1Variations);
             const allVariations = (Math.random() >= 0.5)?v1Variations.concat(v2Variations):v2Variations.concat(v1Variations);
             localStorage.setItem('variations', JSON.stringify(allVariations));
+            localStorage.setItem('completedVariations', JSON.stringify([]));
             };
         setVariations(JSON.parse(localStorage.getItem('variations')));
+        setCompletedVariations(JSON.parse(localStorage.getItem('completedVariations')));
     },[] );
 
     
     const handleShuffle = () => {
         localStorage.removeItem('variations');
+        localStorage.removeItem('completedVariations');
         window.location.reload();
     }
 
@@ -45,7 +49,7 @@ export default function Welcome() {
             <Typography variant="h3">Welcome</Typography>
             
             {variations.map((variation, index) => (
-                <VariationLink key={index} variation={variation} taskNumber={index+1} enabled={true}/>
+                <VariationLink key={index} variation={variation} taskNumber={index+1} enabled={!completedVariations.includes(variation.id)}/>
             ))}
             </Container>
     );
