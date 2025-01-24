@@ -10,7 +10,7 @@ import SelectionCard from "../../components/SelectionCard";
 import Footer from "../../components/Footer";
 import InstructionsTab from "../../components/InstructionsTab";
 import flatVariations from "../../data/flat_variations";
-
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 export default function Summary() {
     const router = useRouter();
@@ -20,6 +20,8 @@ export default function Summary() {
     const selectedTheatre = theatres.find((theatre) => theatre.id === parseInt(theatreId));
     const selectedSchedule = schedules.find((schedule) => schedule.id === parseInt(scheduleId));
     const variation = flatVariations.find((variation) => variation.id === variationId);
+
+    const { stopExperiment } = useEventTracker();
 
     // Cálculos de precios
     const ticketPrice = 15.0;
@@ -32,7 +34,7 @@ export default function Summary() {
 
     const handleSubmit = () => {
         alert("Booking confirmed!");
-
+        stopExperiment(router.pathname,`/`);
         router.push("/"); // O redirige a una página de confirmación
     };
 

@@ -20,6 +20,7 @@ import InstructionsTab from "../../components/InstructionsTab";
 import Head from "next/head";
 import Footer from "../../components/Footer";
 import flatVariations from "../../data/flat_variations";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 export default function SelectFilteredOption() {
 
@@ -38,15 +39,20 @@ const { timespan, seatArea, date, maxDistance, movieId, variationId } = router.q
 const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
 const [selectedOption, setSelectedOption] = useState(null);
 const variation = flatVariations.find((variation) => variation.id === variationId);
+const { capturePageData, stopExperiment } = useEventTracker();
 
   const handleNext = () => {
     if (selectedTheatre) {
-      router.push(`/`);
+      let nextPath = `/summary?movieId=${movieId}&theatreId=${selectedTheatre.id}&scheduleId=${selectedSchedule.id}&time=${selectedTime}&seat=${selectedSeat}&variationId=${variationId}`
+      capturePageData(router.pathname,nextPath);
+      router.push(nextPath);
     }
   };
 
   const handleBack = () => {
-    router.push(`/options?variationId=${variationId}`);
+    let nextPath = `/options?variationId=${variationId}`
+    capturePageData(router.pathname,nextPath);
+    router.push(nextPath);
   };
 
   return (

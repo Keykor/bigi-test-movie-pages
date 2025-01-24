@@ -4,15 +4,18 @@ import allMovies from "../data/movies.js";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useUserFlow } from "@/context/UserFlowProvider";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 const VariationLink = ({ variation, taskNumber, enabled }) => {
   const router = useRouter();
   const { setConfig, resetUserFlow } = useUserFlow();
   const movie = allMovies.find((movie) => movie.id === parseInt(variation.movie));
-  
+  const { startExperiment } = useEventTracker();
+
   const handleNext = () => {
     resetUserFlow();
     setConfig(variation);
+    startExperiment();
     router.push({
         pathname: variation.version,
         query: { variationId: variation.id },
