@@ -49,7 +49,8 @@ export default function Welcome() {
             <Typography variant="h3">Welcome</Typography>
             
             {variations.map((variation, index) => (
-                <VariationLink key={index} variation={variation} taskNumber={index+1} enabled={!completedVariations.includes(variation.id)}/>
+                <VariationLink key={index} variation={variation} taskNumber={index+1} enabled={Array.isArray(completedVariations) && variation?.id && !completedVariations.includes(variation.id)}
+/>
             ))}
             </Container>
     );
