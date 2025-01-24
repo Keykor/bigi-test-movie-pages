@@ -106,6 +106,22 @@ const theatres = [
             },
         },
     },
+    {
+        id: 7,
+        name: "Oasis",
+        distance: "0.4 km",
+        image: "theatres/oasis.png",
+        coordinates: [55.67797275579064, 12.587716213899496],
+        zoom: 15,
+        schedules: {
+            "Today": {
+                "12:00": [
+                    { row: "12", occupiedSeats: ["b", "c", "d", "e", "f", "g", "h", "i"] }
+                ],
+            },
+        },
+    },
+    
 ];
 
 export default theatres;

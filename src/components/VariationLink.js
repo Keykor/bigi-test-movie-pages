@@ -24,7 +24,20 @@ const VariationLink = ({ variation, taskNumber, enabled }) => {
         <Typography variant="h6" style={{ margin: "5px 0" }}>Task {taskNumber} ({variation.version})</Typography>
         <Typography variant="body1">
           Get a ticket for the movie <strong>{movie.title}</strong> for <strong>{variation.date}</strong> starting at <strong>{variation.time}</strong>, and for the seat <strong>{variation.seat}</strong>
-          </Typography>
+        </Typography>
+        {/* Debugging info - remove on deploy*/}
+        <Typography variant="body2" style={{color:"#b33"}}>
+          <strong>Variation ID:</strong> {variation.id} - Seats: 
+          {Object.keys(variation.rules).map((key) => {
+              const seats = variation.rules[key].availableSeats;
+              return <span key={key} style={{fontWeight:"bold", marginRight:"5px"}}>
+              {(seats.length == 0)?"FULL":""}
+              {(seats.length > 0) && !seats.find((seat) => seat == variation.seat)?"N/A":""}
+              {seats.find((seat) => seat == variation.seat)?variation.seat:""}
+              </span>
+          })}
+        </Typography>
+        {/* End Debugging info - remove on deploy*/}
         {enabled && (
           <Button onClick={handleNext} target="_blank" variant="contained">
             Start
