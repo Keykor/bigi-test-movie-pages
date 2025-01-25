@@ -29,7 +29,6 @@ export default function Summary() {
 
     const handleBack = () => {
         let nextPath = `/seat?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&time=${time}&variationId=${variationId}`
-        capturePageData(router.pathname,nextPath);
         router.push(nextPath);
     };
 

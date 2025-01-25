@@ -12,7 +12,6 @@ import Footer from "../../components/Footer";
 import InstructionsTab from "../../components/InstructionsTab";
 import flatVariations from "../../data/flat_variations";
 import {useUserFlow} from "@/context/UserFlowProvider";
-import {useEventTracker} from "@/context/EventTrackerProvider";
 
 const seatStructure = {
     Back: {
@@ -95,19 +94,16 @@ export default function SelectSeats() {
             setSelectedSeat(seatId === selectedSeat ? null : seatId);
         }
     };
-    const { capturePageData } = useEventTracker();
 
     const handleNext = () => {
         if (selectedSeat) {
             let nextPath = `/summary?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&time=${time}&variationId=${variationId}&seat=${selectedSeat}`
-            capturePageData(router.pathname,nextPath);
             router.push(nextPath);
         }
     };
 
     const handleBack = () => {
         let nextPath = `/show?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`
-        capturePageData(router.pathname,nextPath);
         router.push(nextPath);
     }
 

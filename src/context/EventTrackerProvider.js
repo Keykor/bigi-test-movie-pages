@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { throttle } from "lodash";
 import { put } from '@vercel/blob';
 import { v4 as uuidv4 } from "uuid";
-
+import { useRouter } from "next/router";
 const EventTrackerContext = createContext();
 
 export const EventTrackerProvider = ({ children }) => {
@@ -10,6 +10,7 @@ export const EventTrackerProvider = ({ children }) => {
   const [experimentData, setExperimentData] = useState(null);
   const [uuid] = useState(uuidv4()); 
   const [sampleCounter, setSampleCounter] = useState(0);
+  const router = useRouter();
 
   const startExperiment = (subject, version) => {
     setExperimentData({
@@ -20,68 +21,7 @@ export const EventTrackerProvider = ({ children }) => {
     });
     setIsTracking(true);
     console.log(`Experiment started for subject: ${subject}, version: ${version}`);
-  };
-
-  const capturePageData = (previousPath, nextPath) => {
-    if (!experimentData) {
-      console.error("No experiment in progress!");
-      return;
-    }
-  
-    let metrics = {};
-    if (performance.getEntriesByType("navigation").length > 0) {
-      const [navigationEntry] = performance.getEntriesByType("navigation");
-      metrics.domContentLoadedTime =
-        navigationEntry.domContentLoadedEventEnd - navigationEntry.startTime;
-      metrics.loadTime = navigationEntry.loadEventEnd - navigationEntry.startTime;
-    } else if (performance.timing) {
-      const timing = performance.timing;
-      metrics.domContentLoadedTime =
-        timing.domContentLoadedEventEnd - timing.navigationStart;
-      metrics.loadTime = timing.loadEventEnd - timing.navigationStart;
-    }
-  
-    const visitEndTime = new Date().toISOString();
-  
-    setExperimentData((prev) => {
-      const updatedPages = [...prev.pages];
-  
-      // Actualizar la página anterior con los datos finales
-      if (updatedPages.length > 0) {
-        const lastPageIndex = updatedPages.length - 1;
-  
-        updatedPages[lastPageIndex] = {
-          ...updatedPages[lastPageIndex],
-          visitEndTime,
-          pageLoadTime: metrics,
-        };
-      }
-
-      // Preparar una nueva entrada para la siguiente página
-      const visitStartTime = new Date().toISOString();
-  
-      updatedPages.push({
-        page: nextPath,
-        pageLoadTime: null,
-        mouseMovements: [],
-        scrollPositions: [],
-        clicks: [],
-        widgetTimes: {},
-        visitStartTime,
-        visitEndTime: null,
-      });
-  
-      return {
-        ...prev,
-        pages: updatedPages,
-      };
-    });
-  
-    console.log(
-      `Data captured for page: ${previousPath} and tracking started for: ${nextPath}`
-    );
-  };
-  
+  };  
 
   const stopExperiment = () => {
     if (!experimentData) {
@@ -89,48 +29,34 @@ export const EventTrackerProvider = ({ children }) => {
       return;
     }
   
-    // Capturar métricas de rendimiento para la página anterior
-    let metrics = {};
-    if (performance.getEntriesByType("navigation").length > 0) {
-      const [navigationEntry] = performance.getEntriesByType("navigation");
-      metrics.domContentLoadedTime =
-        navigationEntry.domContentLoadedEventEnd - navigationEntry.startTime;
-      metrics.loadTime = navigationEntry.loadEventEnd - navigationEntry.startTime;
-    } else if (performance.timing) {
-      const timing = performance.timing;
-      metrics.domContentLoadedTime =
-        timing.domContentLoadedEventEnd - timing.navigationStart;
-      metrics.loadTime = timing.loadEventEnd - timing.navigationStart;
-    }
+    // Captura el tiempo actual como fin del experimento
+    const experimentEndTime = new Date().toISOString();
   
-    // Actualiza el estado con la última página y finalizar el experimento
+    // Actualiza la última página activa con `visitEndTime`
     setExperimentData((prev) => {
       const updatedPages = [...prev.pages];
   
-      // Actualiza la última página con `visitEndTime` y métricas
+      // Si hay páginas registradas, actualizamos la última con su `visitEndTime`
       if (updatedPages.length > 0) {
         const lastPageIndex = updatedPages.length - 1;
-        const visitEndTime = new Date().toISOString();
-  
         updatedPages[lastPageIndex] = {
           ...updatedPages[lastPageIndex],
-          visitEndTime,
-          pageLoadTime: metrics,
+          visitEndTime: experimentEndTime,
         };
       }
   
       const updatedExperimentData = {
         ...prev,
-        experimentEndTime: new Date().toISOString(),
+        experimentEndTime, // Marca el tiempo de finalización del experimento
         pages: updatedPages,
-      };
+      };  
   
       // Convertir los datos del experimento a una cadena JSON
       const jsonData = JSON.stringify(updatedExperimentData, null, 2);
       // Subir los datos a Vercel Blob
       uploadExperimentData(jsonData)
       
-      // downloadExperimentData(updatedExperimentData); 
+      //downloadExperimentData(updatedExperimentData); 
   
       return updatedExperimentData;
     });
@@ -156,6 +82,7 @@ export const EventTrackerProvider = ({ children }) => {
     }
   };
 
+  
   /*
   const downloadExperimentData = (data) => {
     try {
@@ -172,6 +99,7 @@ export const EventTrackerProvider = ({ children }) => {
     }
   };
   */
+
 
   const resetExperiment = () => {
     setExperimentData(null);
@@ -291,13 +219,78 @@ export const EventTrackerProvider = ({ children }) => {
   };
   */
 
+  useEffect(() => {
+    if (!isTracking) return;
+  
+    const handleRouteChangeStart = (url) => {
+      performance.mark("routeChangeStart"); // Marca el inicio de la transición
+      console.log(`Route change started for ${url}`);
+    };
+  
+    const handleRouteChangeComplete = (url) => {
+      performance.mark("routeChangeEnd"); // Marca el fin de la transición
+      performance.measure("routeChangeDuration", "routeChangeStart", "routeChangeEnd"); // Mide la duración
+  
+      const [measure] = performance.getEntriesByName("routeChangeDuration");
+      const duration = measure.duration; // Duración en milisegundos
+  
+      console.log(`Route change to ${url} completed in ${duration.toFixed(2)}ms`);
+  
+      // Limpia las marcas y mediciones
+      performance.clearMarks("routeChangeStart");
+      performance.clearMarks("routeChangeEnd");
+      performance.clearMeasures("routeChangeDuration");
+  
+      // Integrar en experimentData
+      setExperimentData((prev) => {
+        const updatedPages = [...prev.pages];
+        const visitStartTime = new Date().toISOString();
+  
+        // Actualiza la página anterior con `visitEndTime`
+        if (updatedPages.length > 0) {
+          const lastPageIndex = updatedPages.length - 1;
+          updatedPages[lastPageIndex] = {
+            ...updatedPages[lastPageIndex],
+            visitEndTime: visitStartTime,
+          };
+        }
+  
+        // Añade la nueva página con la duración de la transición
+        updatedPages.push({
+          page: url,
+          visitStartTime,
+          visitEndTime: null,
+          pageTransitionDuration: duration,
+          mouseMovements: [],
+          scrollPositions: [],
+          clicks: [],
+          widgetTimes: {},
+        });
+  
+        return {
+          ...prev,
+          pages: updatedPages,
+        };
+      });
+    };
+  
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+    router.events.on("routeChangeComplete", handleRouteChangeComplete);
+  
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChangeStart);
+      router.events.off("routeChangeComplete", handleRouteChangeComplete);
+    };
+  }, [router, isTracking]);
+  
+  
+
   return (
     <EventTrackerContext.Provider
       value={{
         isTracking,
         experimentData,
         startExperiment,
-        capturePageData,
         stopExperiment,
         //trackWidgetTime,
       }}

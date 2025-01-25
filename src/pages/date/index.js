@@ -11,7 +11,6 @@ import NavigationButtons from "../../components/NavigationButtons";
 import Footer from "../../components/Footer";
 import InstructionsTab from "../../components/InstructionsTab";
 import flatVariations from "../../data/flat_variations";
-import { useEventTracker } from "@/context/EventTrackerProvider";
 
 export default function SelectDate() {
     const router = useRouter();
@@ -23,11 +22,9 @@ export default function SelectDate() {
     const [scheduleId, setScheduleId] = useState(null);
     const variation = flatVariations.find((variation) => variation.id === variationId);
     const todayString = new Date().toLocaleString("en-US", { month: "short", day: "2-digit" });
-    const { capturePageData } = useEventTracker();
     const handleNext = () => {
         if (scheduleId) {
             let nextPath = `/show?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`
-            capturePageData(router.pathname,nextPath);
             router.push(nextPath);
         } else {
             console.error("No date selected!");
@@ -36,7 +33,6 @@ export default function SelectDate() {
 
     const handleBack = () => { 
         let nextPath = `/theatre?movieId=${movieId}&variationId=${variationId}`
-        capturePageData(router.pathname,nextPath);
         router.push(nextPath);
     };
 

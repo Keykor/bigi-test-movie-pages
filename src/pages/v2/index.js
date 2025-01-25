@@ -19,11 +19,10 @@ export default function SelectMovie() {
 
     useEffect(() => {}, [variation]) // All the magic is here
     
-    const { capturePageData, stopExperiment } = useEventTracker();
+    const { stopExperiment } = useEventTracker();
     const handleNext = () => {
         if (selectedMovie) {
             let nextPath = `../options?movieId=${selectedMovie}&variationId=${variationId}`
-            capturePageData(router.pathname,nextPath);
             router.push(nextPath);
         }
     };

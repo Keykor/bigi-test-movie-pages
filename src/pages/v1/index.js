@@ -17,11 +17,10 @@ export default function SelectMovie() {
     const { variationId } = router.query;
     const variation = flatVariations.find((variation) => variation.id === variationId);
 
-    const { capturePageData, stopExperiment } = useEventTracker();
+    const { stopExperiment } = useEventTracker();
     const handleNext = () => {
         if (selectedMovie) {
             let nextPath = `/theatre?movieId=${selectedMovie}&variationId=${variationId}`
-            capturePageData(router.pathname,nextPath);
             router.push(nextPath);
         }
     };
