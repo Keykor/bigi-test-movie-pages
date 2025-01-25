@@ -123,11 +123,11 @@ export const EventTrackerProvider = ({ children }) => {
       };
   
       // Convertir los datos del experimento a una cadena JSON
-      // const jsonData = JSON.stringify(updatedExperimentData, null, 2);
+      const jsonData = JSON.stringify(updatedExperimentData, null, 2);
       // Subir los datos a Vercel Blob
-      // uploadExperimentData(jsonData)
+      uploadExperimentData(jsonData)
       
-      downloadExperimentData(updatedExperimentData); 
+      // downloadExperimentData(updatedExperimentData); 
   
       return updatedExperimentData;
     });
@@ -136,7 +136,7 @@ export const EventTrackerProvider = ({ children }) => {
     resetExperiment();
   };
   
-  /*
+  
   const uploadExperimentData = async (data) => {
     console.log(process.env.BLOB_READ_WRITE_TOKEN);
     try {
@@ -149,8 +149,9 @@ export const EventTrackerProvider = ({ children }) => {
     } catch (error) {
       console.error("Error uploading data:", error);
     }
-  };*/
+  };
 
+  /*
   const downloadExperimentData = (data) => {
     try {
       const jsonData = JSON.stringify(data, null, 2);
@@ -165,12 +166,15 @@ export const EventTrackerProvider = ({ children }) => {
       console.error("Error during Blob creation or opening:", error);
     }
   };
+  */
 
   const resetExperiment = () => {
     setExperimentData(null);
     setIsTracking(false);
   };
 
+  // Commented for only testing times purpouses
+  /*
   useEffect(() => {
     if (!isTracking) return;
 
@@ -280,6 +284,7 @@ export const EventTrackerProvider = ({ children }) => {
       widget?.removeEventListener("blur", handleBlur);
     };
   };
+  */
 
   return (
     <EventTrackerContext.Provider
@@ -289,7 +294,7 @@ export const EventTrackerProvider = ({ children }) => {
         startExperiment,
         capturePageData,
         stopExperiment,
-        trackWidgetTime,
+        //trackWidgetTime,
       }}
     >
       {children}
