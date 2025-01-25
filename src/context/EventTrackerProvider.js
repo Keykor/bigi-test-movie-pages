@@ -8,6 +8,8 @@ const EventTrackerContext = createContext();
 export const EventTrackerProvider = ({ children }) => {
   const [isTracking, setIsTracking] = useState(false);
   const [experimentData, setExperimentData] = useState(null);
+  const [uuid] = useState(uuidv4()); 
+  const [sampleCounter, setSampleCounter] = useState(0);
 
   const startExperiment = (subject, version) => {
     setExperimentData({
@@ -101,11 +103,11 @@ export const EventTrackerProvider = ({ children }) => {
       metrics.loadTime = timing.loadEventEnd - timing.navigationStart;
     }
   
-    // Actualizar el estado con la última página y finalizar el experimento
+    // Actualiza el estado con la última página y finalizar el experimento
     setExperimentData((prev) => {
       const updatedPages = [...prev.pages];
   
-      // Actualizar la última página con `visitEndTime` y métricas
+      // Actualiza la última página con `visitEndTime` y métricas
       if (updatedPages.length > 0) {
         const lastPageIndex = updatedPages.length - 1;
         const visitEndTime = new Date().toISOString();
@@ -139,13 +141,15 @@ export const EventTrackerProvider = ({ children }) => {
   
   
   const uploadExperimentData = async (data) => {
-    console.log(process.env.BLOB_READ_WRITE_TOKEN);
     try {
-      const blob = await put(`experiments/${uuidv4()}.json`, data, {
-        access: 'public',
+      const filename = `experiments/${uuid}_${sampleCounter + 1}.json`; 
+      setSampleCounter((prev) => prev + 1); 
+
+      const blob = await put(filename, data, {
+        access: "public",
         token: process.env.BLOB_READ_WRITE_TOKEN,
       });
-  
+
       console.log("Data uploaded successfully:", blob.url);
     } catch (error) {
       console.error("Error uploading data:", error);
