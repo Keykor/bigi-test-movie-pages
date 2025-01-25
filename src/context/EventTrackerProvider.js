@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { throttle } from "lodash";
 import { put } from '@vercel/blob';
+import { v4 as uuidv4 } from "uuid";
 
 const EventTrackerContext = createContext();
 
