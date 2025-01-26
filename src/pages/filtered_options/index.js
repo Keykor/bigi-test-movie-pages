@@ -39,19 +39,18 @@ const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
 const [selectedOption, setSelectedOption] = useState(options[optionId-1]);
 const [selectedTheatreId, setSelectedTheatreId] = useState(null);
 const variation = flatVariations.find((variation) => variation.id === variationId);
-const { capturePageData, stopExperiment } = useEventTracker();
+const { stopExperiment } = useEventTracker();
 
   const handleNext = () => {
     if (selectedOption) {
       let nextPath = `/summary?movieId=${movieId}&theatreId=${selectedTheatreId}&scheduleId=${scheduleId}&time=${selectedOption.time}&seat=${selectedOption.seat}&variationId=${variationId}&optionId=${selectedOption.id}`
-      capturePageData(router.pathname,nextPath);
+      stopExperiment();
       router.push(nextPath);
     }
   };
 
   const handleBack = () => {
     let nextPath = `/options?movieId=${movieId}&variationId=${variationId}`
-    capturePageData(router.pathname,nextPath);
     router.push(nextPath);
   };
 
