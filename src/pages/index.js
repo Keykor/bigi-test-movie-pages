@@ -10,6 +10,7 @@ export default function Welcome() {
     const router = useRouter();
     const [variations, setVariations] = useState([]);
     const [completedVariations, setCompletedVariations] = useState([]);
+    const [debugMode, setDebugMode] = useState(false);
         
     function shuffleArray(array) {
         for (var i = array.length - 1; i >= 0; i--) {
@@ -39,18 +40,33 @@ export default function Welcome() {
         localStorage.removeItem('completedVariations');
         window.location.reload();
     }
+    
+    const handleToggle = () => {setDebugMode(!debugMode)};
 
     return (
             <Container>
             <Button onClick={handleShuffle} variant="contained" color="success">
                 Re-Shuffle Variants
-              </Button>
+            </Button>
             
-            <Typography variant="h3">Welcome</Typography>
+            <Button onClick={handleToggle} variant="contained" color="success" sx={{margin: "0 20px"}} >
+                Toggle Debug Mode
+            </Button>
+            
+            <Typography variant="h4">Thanks for joining! Please read carefully</Typography>
+            <Typography variant="h6">You will be asked to book a movie ticket under 8 sets of conditions: movie, theatre distance, date, time and seat.</Typography>
+            <Typography variant="h6">You must meet all conditions each time - but note that <strong>theatre selection</strong> only requires a <strong>max. distance</strong>, not a specific theatre.</Typography>
+            <Typography variant="h6">If you cannot find the required seat, you must go back and <strong>find a different theatre</strong>, always below the max. distance. You might need to try a few different theatres until you find one with the seat, but <strong>you will always be able to find it</strong>.</Typography>
+            
             
             {variations.map((variation, index) => (
-                <VariationLink key={index} variation={variation} taskNumber={index+1} enabled={Array.isArray(completedVariations) && variation?.id && !completedVariations.includes(variation.id)}
-/>
+                <VariationLink 
+                    key={index}
+                    variation={variation}
+                    taskNumber={index+1}
+                    enabled={Array.isArray(completedVariations) && variation?.id && !completedVariations.includes(variation.id)}
+                    debugMode={debugMode}
+                />
             ))}
             </Container>
     );
