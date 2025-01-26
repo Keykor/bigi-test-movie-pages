@@ -20,6 +20,7 @@ import InstructionsTab from "../../components/InstructionsTab";
 import Head from "next/head";
 import Footer from "../../components/Footer";
 import flatVariations from "../../data/flat_variations";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 // Deshabilitar SSR para componentes de Leaflet
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
@@ -40,14 +41,16 @@ export default function SelectOptions() {
   const [selectedTheatre, setSelectedTheatre] = useState(null);
   const [maxDistance, setMaxDistance] = useState(5);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [selectedTimespan, setSelectedTimespan] = useState(null);
   const [selectedSeatArea, setSelectedSeatArea] = useState(null);
   const todayString = new Date().toLocaleString("en-US", { month: "short", day: "2-digit" });
 
-  const filtersSet = () => selectedTimespan && selectedSeatArea && selectedDate && maxDistance;
+  const filtersSet = () => selectedTimespan && selectedSeatArea && selectedSchedule && maxDistance;
 
   const handleDistanceChange = (distance) => setMaxDistance(distance);
 
+  const { capturePageData } = useEventTracker();
 
   const filteredTheatres = theatres.filter((theatre) => {
     const distanceInKm = parseFloat(theatre.distance.split(" ")[0]);
@@ -55,12 +58,14 @@ export default function SelectOptions() {
   });
 
   const handleNext = () => {
-      let nextPath = `/filtered_options?movieId=${movieId}&timespan=${selectedTimespan}&seatArea=${selectedSeatArea.row+"|"+selectedSeatArea.col}&date=${selectedDate}&maxDistance=${maxDistance}&variationId=${variationId}`
+      let nextPath = `/filtered_options?movieId=${movieId}&timespan=${selectedTimespan}&seatArea=${selectedSeatArea.row+"|"+selectedSeatArea.col}&scheduleId=${selectedSchedule.id}&maxDistance=${maxDistance}&variationId=${variationId}`
+      capturePageData(router.pathname,nextPath);
       router.push(nextPath);
   };
 
   const handleBack = () => {
     let nextPath = `/v2?variationId=${variationId}`
+    capturePageData(router.pathname,nextPath);
     router.push(nextPath);
   };
 
@@ -92,9 +97,9 @@ export default function SelectOptions() {
           {schedules.slice(0, 6).map((schedule) => (
             <Button
               key={schedule.date}
-              variant={selectedDate === schedule.date ? "contained" : "outlined"}
-              color={selectedDate === schedule.date ? "primary" : "default"}
-              onClick={() => setSelectedDate(schedule.date)}
+              variant={selectedSchedule === schedule ? "contained" : "outlined"}
+              color={selectedSchedule === schedule ? "primary" : "default"}
+              onClick={() => setSelectedSchedule(schedule)}
             >
               {schedule.date === todayString ? "TODAY" : schedule.date}
             </Button>

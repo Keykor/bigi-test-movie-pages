@@ -21,14 +21,19 @@ const InstructionsTab = ({variation} )  => {
                 <strong>Start time:</strong> {variation.time}<br/>
                 <strong>Seat:</strong> {variation.seat}<br/>
             </Typography>
-            <Typography variant="body2">
-                <strong>Var ID:</strong> {variation.id} - Seats: 
-                {Object.keys(variation.rules).map((key) => {
-                    return <span key={key} style={{fontWeight:"bold", marginRight:"5px"}}>
-                    S{ variation.rules[key] == [] ? "No": variation.rules[key].availableSeats}
-                    </span>
-                })}
+            {/* Debugging info - remove on deploy*/}
+            <Typography variant="body2" style={{color:"#b33"}}>
+              <strong>Variation ID:</strong> {variation.id} - Seats: 
+              {Object.keys(variation.rules).map((key) => {
+                  const seats = variation.rules[key].availableSeats;
+                  return <span key={key} style={{fontWeight:"bold", marginRight:"5px"}}>
+                  {(seats.length == 0)?"FULL":""}
+                  {(seats.length > 0) && !seats.find((seat) => seat == variation.seat)?"N/A":""}
+                  {seats.find((seat) => seat == variation.seat)?variation.seat:""}
+                  </span>
+              })}
             </Typography>
+            {/* End Debugging info - remove on deploy*/}
           </CardContent>
         </Card>
       );

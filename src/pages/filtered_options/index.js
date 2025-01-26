@@ -25,34 +25,41 @@ import { useEventTracker } from "@/context/EventTrackerProvider";
 export default function SelectFilteredOption() {
 
 const options = [
-  {id: "1", theatre:"Avalon (<3km)", time:"19:00", seat:"Seat 9D"},
-  {id: "2", theatre:"Avalon (<3km)", time:"19:00", seat:"Seat 9D"},
-  {id: "3", theatre:"Avalon (<3km)", time:"19:00", seat:"Seat 9D"},
-  {id: "4", theatre:"The Strand (<5km)", time:"20:00", seat:"Seat 11d"},
-  {id: "5", theatre:"The Strand (<5km)", time:"20:00", seat:"Seat 12d"},
-  {id: "6", theatre:"Garden (<3km)", time:"19:00", seat:"Seat 12e"},
-  
+  {id: "1", theatreId: 3, theatre:"Avalon (<3km)", time:"19:00", seat:"D9"},
+  {id: "2", theatreId: 3, theatre:"Avalon (<3km)", time:"19:00", seat:"D9"},
+  {id: "3", theatreId: 3, theatre:"Avalon (<3km)", time:"19:00", seat:"D9"},
+  {id: "4", theatreId: 4, theatre:"The Strand (<5km)", time:"20:00", seat:"D11"},
+  {id: "5", theatreId: 4, theatre:"The Strand (<5km)", time:"18:00", seat:"E12"},
+  {id: "6", theatreId: 2, theatre:"Garden (<3km)", time:"12:00", seat:"A12"},
 ];
 
 const router = useRouter();
-const { timespan, seatArea, date, maxDistance, movieId, variationId } = router.query;
+const { timespan, seatArea, scheduleId, maxDistance, movieId, variationId, optionId } = router.query;
 const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
-const [selectedOption, setSelectedOption] = useState(null);
+const [selectedOption, setSelectedOption] = useState(options[optionId-1]);
+const [selectedTheatreId, setSelectedTheatreId] = useState(null);
 const variation = flatVariations.find((variation) => variation.id === variationId);
-const { stopExperiment } = useEventTracker();
+const { capturePageData, stopExperiment } = useEventTracker();
 
   const handleNext = () => {
-    if (selectedTheatre) {
-      let nextPath = `/summary?movieId=${movieId}&theatreId=${selectedTheatre.id}&scheduleId=${selectedSchedule.id}&time=${selectedTime}&seat=${selectedSeat}&variationId=${variationId}`
-      stopExperiment();
+    if (selectedOption) {
+      let nextPath = `/summary?movieId=${movieId}&theatreId=${selectedTheatreId}&scheduleId=${scheduleId}&time=${selectedOption.time}&seat=${selectedOption.seat}&variationId=${variationId}&optionId=${selectedOption.id}`
+      capturePageData(router.pathname,nextPath);
       router.push(nextPath);
     }
   };
 
   const handleBack = () => {
-    let nextPath = `/options?variationId=${variationId}`
+    let nextPath = `/options?movieId=${movieId}&variationId=${variationId}`
+    capturePageData(router.pathname,nextPath);
     router.push(nextPath);
   };
+
+  const handleSelectOption = (option) => {
+    setSelectedTheatreId(option.theatreId);
+    setSelectedOption(option);
+  };
+
 
   return (
     <>
@@ -84,11 +91,11 @@ const { stopExperiment } = useEventTracker();
             <Button
               style={{display: "block"}}
               key={option.id}
-              variant={selectedOption === option.id ? "contained" : "outlined"}
-              color={selectedOption === option.id ? "primary" : "default"}
-              onClick={() => setSelectedOption(option.id)}
+              variant={(selectedOption?.id == option.id) ? "contained" : "outlined"}
+              color={(selectedOption?.id == option.id) ? "primary" : "default"}
+              onClick={() => handleSelectOption(option)}
             >
-              {option.theatre} {option.time} <strong>{option.seat}</strong>
+              {option.theatre} {option.time} <strong> Seat {option.seat}</strong>
             </Button>
             </p>
           ))}
