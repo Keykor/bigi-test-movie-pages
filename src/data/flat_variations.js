@@ -119,6 +119,32 @@
                 rules: {
                     0: { availableSeats: ["E12"] },
                 }
+            },
+            {
+                id: "16",
+                version: "v2",
+                movie: "6",
+                seat: "E12",
+                distance: "3km",
+                time: "14:00",
+                date: "today",
+                iterationLimit: 0,
+                rules: {
+                    0: { availableSeats: ["E12"] },
+                }
+            },
+            {
+                id: "17",
+                version: "v2",
+                movie: "4",
+                seat: "E12",
+                distance: "5km",
+                time: "12:00",
+                date: "today",
+                iterationLimit: 0,
+                rules: {
+                    0: { availableSeats: ["E12"] },
+                }
             }
 
     ];

@@ -25,20 +25,33 @@ import { useEventTracker } from "@/context/EventTrackerProvider";
 export default function SelectFilteredOption() {
 
 const options = [
-  {id: "1", theatreId: 3, theatre:"Avalon (<3km)", time:"19:00", seat:"D9"},
-  {id: "2", theatreId: 3, theatre:"Avalon (<3km)", time:"19:00", seat:"D9"},
-  {id: "3", theatreId: 3, theatre:"Avalon (<3km)", time:"19:00", seat:"D9"},
-  {id: "4", theatreId: 4, theatre:"The Strand (<5km)", time:"20:00", seat:"D11"},
-  {id: "5", theatreId: 4, theatre:"The Strand (<5km)", time:"18:00", seat:"E12"},
-  {id: "6", theatreId: 2, theatre:"Garden (<3km)", time:"12:00", seat:"A12"},
+  {id: "1", theatreId: 3, theatre:"Avalon (2.3 km)", time:"14:00", seat:"E12"},
+  {id: "2", theatreId: 3, theatre:"Avalon (2.3 km)", time:"19:00", seat:"D9"},
+  {id: "3", theatreId: 3, theatre:"Avalon (2.3 km)", time:"19:00", seat:"D9"},
+  {id: "4", theatreId: 4, theatre:"The Strand (2.8 km)", time:"20:00", seat:"D11"},
+  {id: "5", theatreId: 4, theatre:"The Strand (2.8 km)", time:"18:00", seat:"E12"},
+  {id: "6", theatreId: 2, theatre:"Garden (0.9km)", time:"12:00", seat:"A12"},
+  {id: "7", theatreId: 2, theatre:"Garden (0.9km)", time:"12:00", seat:"E12"},
 ];
+
+function shuffled(array) {
+  let shuffledArray = array;
+  for (var i = shuffledArray.length - 1; i >= 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = shuffledArray[i];
+      shuffledArray[i] = shuffledArray[j];
+      shuffledArray[j] = temp;
+  }
+  return shuffledArray;
+};
 
 const router = useRouter();
 const { timespan, seatArea, scheduleId, maxDistance, movieId, variationId, optionId } = router.query;
 const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
-const [selectedOption, setSelectedOption] = useState(options[optionId-1]);
+const [selectedOption, setSelectedOption] = useState(options.find( (option) => option.id == optionId ));
 const [selectedTheatreId, setSelectedTheatreId] = useState(null);
 const variation = flatVariations.find((variation) => variation.id === variationId);
+const [shuffledOptions] = useState(shuffled(options));
 const { stopExperiment } = useEventTracker();
 
   const handleNext = () => {
@@ -85,7 +98,7 @@ const { stopExperiment } = useEventTracker();
         {/* Selección de opción */}
         <Typography variant="h6" style={{ marginBottom: "6px" }}>Select Option</Typography>
         <Box style={{ display: "block", gap: "10px", marginBottom: "20px" }}>
-          {options.map((option) => (
+          {shuffledOptions.map((option) => (
             <p>
             <Button
               style={{display: "block"}}

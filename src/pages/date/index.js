@@ -61,7 +61,7 @@ export default function SelectDate() {
             {/* Extra wrapping Box to prevent overlapping instructions with next button */}
             <Box style={{ minHeight: "200px" }}> 
             <Box style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-                {schedules.map((schedule) => (
+                {schedules.slice(schedules.findIndex((schedule) => schedule.date == todayString), schedules.findIndex((schedule) => schedule.date == todayString)+6).map((schedule) => (
                     <Button
                         key={schedule.id}
                         variant={scheduleId === schedule.id ? "contained" : "outlined"}

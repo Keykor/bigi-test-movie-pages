@@ -90,7 +90,7 @@ export default function SelectOptions() {
         {/* Selección de fecha */}
         <Typography variant="h6" style={{ marginBottom: "6px" }}>Date</Typography>
         <Box style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-          {schedules.slice(0, 6).map((schedule) => (
+          {schedules.slice(schedules.findIndex((schedule) => schedule.date == todayString), schedules.findIndex((schedule) => schedule.date == todayString)+6).map((schedule) => (
             <Button
               key={schedule.date}
               variant={selectedSchedule === schedule ? "contained" : "outlined"}
@@ -147,7 +147,7 @@ export default function SelectOptions() {
         
         <Grid item xs={12} sm={6} md={6}>
           <Typography variant="h6" style={{ marginBottom: "20px" }}>
-           Seat Preference
+           Seat Area Preference
           </Typography>
           {/* Grilla de bloques */}
           <Box style={{ display: "grid", gridTemplateRows: "repeat(3, auto)", gap: "20px", justifyContent: "left" }}>

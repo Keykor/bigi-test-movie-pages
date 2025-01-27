@@ -74,7 +74,7 @@ export default function SelectShow() {
             {showTimes.length > 0 ? (
                 <Grid container spacing={2} style={{ marginBottom: "20px" }}>
                     {showTimes.map((time) => (
-                        <Grid item xs={6} sm={3} key={time}>
+                        <Grid item xs={6} sm={1} key={time}>
                             <Button
                                 fullWidth
                                 variant={selectedTime === time ? "contained" : "outlined"}
