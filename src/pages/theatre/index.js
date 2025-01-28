@@ -56,7 +56,7 @@ export default function SelectTheatre() {
   };
 
   const handleBack = () => {
-    let nextPath = `/movie?variationId=${variationId}`
+    let nextPath = `/v1?variationId=${variationId}`
     router.push(nextPath);
   };
 

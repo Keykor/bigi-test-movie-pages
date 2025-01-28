@@ -61,7 +61,6 @@ export default function SelectOptions() {
 
   const handleBack = () => {
     let nextPath = `/v2?variationId=${variationId}`
-    capturePageData(router.pathname,nextPath);
     router.push(nextPath);
   };
 
