@@ -20,7 +20,6 @@ import InstructionsTab from "../../components/InstructionsTab";
 import Head from "next/head";
 import Footer from "../../components/Footer";
 import flatVariations from "../../data/flat_variations";
-import { useEventTracker } from "@/context/EventTrackerProvider";
 
 export default function SelectFilteredOption() {
 
@@ -30,7 +29,7 @@ const options = [
   {id: "3", theatreId: 3, theatre:"Avalon (2.3 km)", time:"19:00", seat:"D9"},
   {id: "4", theatreId: 4, theatre:"The Strand (2.8 km)", time:"20:00", seat:"D11"},
   {id: "5", theatreId: 4, theatre:"The Strand (2.8 km)", time:"18:00", seat:"E12"},
-  {id: "6", theatreId: 2, theatre:"Garden (0.9km)", time:"12:00", seat:"A12"},
+  {id: "6", theatreId: 2, theatre:"Garden (0.9km)", time:"12:00", seat:"F12"},
   {id: "7", theatreId: 2, theatre:"Garden (0.9km)", time:"12:00", seat:"E12"},
 ];
 
@@ -52,12 +51,10 @@ const [selectedOption, setSelectedOption] = useState(options.find( (option) => o
 const [selectedTheatreId, setSelectedTheatreId] = useState(null);
 const variation = flatVariations.find((variation) => variation.id === variationId);
 const [shuffledOptions] = useState(shuffled(options));
-const { stopExperiment } = useEventTracker();
 
   const handleNext = () => {
     if (selectedOption) {
       let nextPath = `/summary?movieId=${movieId}&theatreId=${selectedTheatreId}&scheduleId=${scheduleId}&time=${selectedOption.time}&seat=${selectedOption.seat}&variationId=${variationId}&optionId=${selectedOption.id}`
-      stopExperiment();
       router.push(nextPath);
     }
   };
