@@ -20,7 +20,7 @@ export const EventTrackerProvider = ({ children }) => {
       experimentStartTime: new Date().toISOString(),
     });
     setIsTracking(true);
-    console.log(`Experiment started for subject: ${subject}, version: ${version}`);
+    console.log(`Experiment started for subject: ${JSON.stringify(subject)}, version: ${version}`);
   };  
 
   const stopExperiment = () => {
