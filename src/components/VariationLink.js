@@ -23,14 +23,14 @@ const VariationLink = ({ variation, taskNumber, enabled, subject, debugMode }) =
   };
   
   return (
-      <Card variant="outlined" style={{margin: "10px 30px 25px 0", maxWidth: "28%", background: "#fafafa"}}>
+      <Card variant="outlined" style={{margin: "10px 30px 25px 0", maxWidth: "30%", background: "#fafafa"}}>
       <CardContent style={{margin: "10px", padding:"0"}}>
         <Typography variant="h6" style={{fontWeight: "bold", fontSize: "1.1em", margin: "0", color: enabled?"black":"gray" }}>
           <span style={{textDecoration: enabled?"initial":"line-through"}} >Task {taskNumber} {debugMode &&<span>({variation.version})</span>}</span>
           {!enabled && " Completed"}
         </Typography>
         <Typography variant="body1" style={{fontSize: "1em", margin: "0 0 10px 0", color: enabled?"black":"gray", textDecoration: enabled?"initial":"line-through" }}>
-          Book a ticket for the movie <strong>{movie.title}</strong> for <strong>{variation.date}</strong> at <strong>{variation.time}</strong>, and for seat <strong>{variation.seat}</strong>
+          Book a ticket for the movie <strong>{movie.title}</strong> for <strong>{variation.date}</strong> at <strong>{variation.time}</strong>, in a theatre closer than <strong>{variation.distance}</strong> and for seat <strong>{variation.seat}</strong>
         </Typography>
         {/* Debugging info - remove on deploy*/}
         {debugMode &&
