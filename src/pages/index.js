@@ -85,7 +85,7 @@ export default function Welcome() {
     
     const handleToggle = () => {setDebugMode(!debugMode)};
     const handleRead = () => {setInstructionsRead(true)};
-    const handleBackToProlific =() => {router.push("/")};
+    const handleBackToProlific =() => {router.push("https://app.prolific.com/submissions/complete?cc=CN2BVTBT")};
 
     return (
             <Container>
@@ -97,33 +97,31 @@ export default function Welcome() {
                 Toggle Debug Mode
             </Button>
             
-            <Typography variant="h4">Thanks for joining! Please read carefully</Typography>
+            <Typography variant="h4" sx={{marginBottom: "15px"}} >Thanks for joining! Please read carefully</Typography>
             
-            <Typography variant="h6" style={{lineHeight:"inherit", marginBottom: "14px"}} > 
-            We want you to purchase ten movie tickets - one movie ticket per task (there are ten tasks in total).
+            <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
+            We want you to purchase ten movie tickets - one ticket per task (there are ten tasks in total).
+            Per task, you are asked to purchase a single movie ticket for a specific <strong>movie</strong> at a specific <strong>date and time</strong> at the <strong>movie theatre of your choice</strong>. No money is needed for the purchase process.
             </Typography>
-            <Typography variant="h6" style={{lineHeight:"inherit", marginBottom: "14px"}} > 
-            Per task, you are asked to purchase a single movie ticket for a specific <strong>movie</strong> at a specific <strong>date</strong> and time at the <strong>movie theatre of your choice</strong>. No money is needed for the purchase process.
-            </Typography>
-            <Typography variant="h6" style={{lineHeight:"inherit", marginBottom: "14px"}} > 
+            <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
             Please note that your <strong>preferred seat is E12</strong>, and you should only purchase a movie ticket when seat E12 is available.
             </Typography>
-            <Typography variant="h6" style={{lineHeight:"inherit", marginBottom: "14px"}} > 
-            Because there are multiple movie theatres where you live, we will also specify the distance from your home, which will determine the available movie theatres.
+            <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
+            Because there are multiple movie theatres close to your (fictitous) location, we will also specify the distance from your home, which will determine the available movie theatres.
             </Typography>
-            <Typography variant="h6" style={{lineHeight:"inherit", marginBottom: "14px"}} > 
+            <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
             When making your selections, please ensure that you meet the specified parameters per task instruction: <strong>movie, distance from home, date, time, and seat E12</strong>.
             </Typography>
-            <Typography variant="h6" style={{lineHeight:"inherit", marginBottom: "14px"}} > 
+            <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
             <strong>If seat E12 is not available</strong> at one movie theatre, you need to <strong>go back and try another movie theatre</strong> until you find one where the seat is available. <strong>You will always be able to find a movie theatre where seat E12 is available</strong>.
             </Typography>
-            <Typography variant="h6" style={{lineHeight:"inherit", marginBottom: "14px"}} > 
+            <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
             Note: The task instructions with its parameters (movie, time, distance, seat) will be <strong>visible on the right-hand side of the screen at all times</strong>.
             </Typography>
             
             {!instructionsRead && 
                 <>
-                <Typography variant="h5" sx={{ color: "#393"}} >Please answer these 2 questions to start</Typography>
+                <Typography variant="h5" sx={{ color: "#393", margin: "25px 0 10px"}} >Please answer these 2 questions to start</Typography>
                 <div>
                   <FormControl sx={{ m: 1, minWidth: "45%" }}>
                     <InputLabel id="ticketFrequencyLabel">How frequently do you book online tickets?</InputLabel>
@@ -171,11 +169,11 @@ export default function Welcome() {
                         debugMode={debugMode}
                     />
                 ))}
-                <Card variant="outlined" style={{margin: "10px", width: "28%", color:"#aaa"}}>
+                <Card variant="outlined" align="center" style={{margin: "10px 0 25px 0", width: "28%", color:"#aaa"}}>
                     <CardContent>
-                    <Typography variant="h6">
+                    <Typography variant={"h6"} >
                     {completedVariations.length==variations.length?
-                        <Button onClick={handleBackToProlific} variant="contained">Return to Prolific</Button>:"Return to Prolific button will appear here."
+                        <Button onClick={handleBackToProlific} variant="contained" size="large">Return to Prolific</Button>:"Return to Prolific button will appear here."
                     }
                     </Typography>
                     </CardContent>
