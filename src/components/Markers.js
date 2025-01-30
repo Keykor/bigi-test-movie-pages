@@ -11,12 +11,20 @@ const Markers = ({ data, theatreSetter }) => {
   return (
     <>
       {data.map((theatre) => (
+        theatreSetter?
         <CustomMarker
           key={theatre.id}
           position={theatre.coordinates}
           name={theatre.name}
           distance={theatre.distance}
           onSelect={() => theatreSetter(theatre.id)}
+        />
+       :
+        <CustomMarker
+          key={theatre.id}
+          position={theatre.coordinates}
+          name={theatre.name}
+          distance={theatre.distance}
         />
       ))}
     </>

@@ -37,7 +37,7 @@ export default function SelectOptions() {
 
   const selectedMovie = movies.find((movie) => movie.id === parseInt(movieId));
   const variation = flatVariations.find((variation) => variation.id === variationId);
-  const [selectedTheatre, setSelectedTheatre] = useState(null);
+  // const [selectedTheatre, setSelectedTheatre] = useState(null);
   const [maxDistance, setMaxDistance] = useState(5);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
@@ -138,7 +138,7 @@ export default function SelectOptions() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Markers data={filteredTheatres} theatreSetter={setSelectedTheatre} />
+            <Markers data={filteredTheatres}/>
           </MapContainer>
           
         </Grid>
