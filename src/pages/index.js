@@ -6,7 +6,9 @@ import flatVariations from "@/data/flat_variations";
 
 
 export default function Welcome() {
-
+    const showDebugButtons = false;
+    const [debugMode, setDebugMode] = useState(false);
+    
     const router = useRouter();
     const { PROLIFIC_PID, STUDY_ID, SESSION_ID } = router.query;
     
@@ -14,7 +16,6 @@ export default function Welcome() {
 
     const [variations, setVariations] = useState([]);
     const [completedVariations, setCompletedVariations] = useState([]);
-    const [debugMode, setDebugMode] = useState(false);
     const [instructionsRead, setInstructionsRead] = useState(false);
     
     const [ticketFrequency, setTicketFrequency] = useState("");
@@ -62,8 +63,12 @@ export default function Welcome() {
         
         if (localStorage.getItem("variations") === null) {
             const v2Variations = flatVariations.filter( (variation) => variation.version == "v2" );
-            const v1Variations = flatVariations.filter( (variation) => variation.version == "v1" );
-            shuffleArray(v1Variations);
+            const allV1Variations = flatVariations.filter( (variation) => variation.version == "v1" );
+            const initialV1Variations = allV1Variations.filter( (variation) => variation.id == "99" );
+            const regularV1Variations = allV1Variations.filter( (variation) => variation.id !== "99" );
+            shuffleArray(regularV1Variations);
+            shuffleArray(v2Variations);
+            const v1Variations = initialV1Variations.concat(regularV1Variations);
             const allVariations = (Math.random() >= 0.5)?v1Variations.concat(v2Variations):v2Variations.concat(v1Variations);
             localStorage.setItem('variations', JSON.stringify(allVariations));
             localStorage.setItem('completedVariations', JSON.stringify([]));
@@ -89,6 +94,8 @@ export default function Welcome() {
 
     return (
             <Container>
+            {showDebugButtons ??
+                <>
             <Button onClick={handleShuffle} variant="contained" color="success" size="small">
                 Re-Shuffle Variants
             </Button>
@@ -96,11 +103,12 @@ export default function Welcome() {
             <Button onClick={handleToggle} variant="contained" color="success" sx={{margin: "0 20px"}}  size="small">
                 Toggle Debug Mode
             </Button>
-            
+            </>
+            }
             <Typography variant="h4" sx={{marginBottom: "15px"}} >Thanks for joining! Please read carefully</Typography>
             
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            We want you to purchase ten movie tickets - one ticket per task (there are ten tasks in total).
+            We want you to purchase eleven movie tickets - one ticket per task (there are eleven tasks in total).
             Per task, you are asked to purchase a single movie ticket for a specific <strong>movie</strong> at a specific <strong>date and time</strong> at the <strong>movie theatre of your choice</strong>. No money is needed for the purchase process.
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
@@ -113,7 +121,7 @@ export default function Welcome() {
             When making your selections, please ensure that you meet the specified parameters per task instruction: <strong>movie, distance from home, date, time, and seat E12</strong>.
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            <strong>If seat E12 is not available</strong> at one movie theatre, you need to <strong>go back and try another movie theatre</strong> until you find one where the seat is available. <strong>You will always be able to find a movie theatre where seat E12 is available</strong>.
+            <strong>It may happen that seat E12 is not available</strong>. In this case, you need to <strong>go back and try another movie theatre</strong> until you find one where the seat is available. <strong>You will always be able to find a movie theatre where seat E12 is available</strong>.
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
             Note: The task instructions with its parameters (movie, time, distance, seat) will be <strong>visible on the right-hand side of the screen at all times</strong>.
@@ -169,7 +177,7 @@ export default function Welcome() {
                         debugMode={debugMode}
                     />
                 ))}
-                <Card variant="outlined" align="center" style={{margin: "10px 0 25px 0", width: "28%", color:"#aaa"}}>
+                <Card variant="outlined" align="center" style={{margin: "10px 0 25px 0", width: "30%", color:"#aaa"}}>
                     <CardContent>
                     <Typography variant={"h6"} >
                     {completedVariations.length==variations.length?

@@ -1,5 +1,18 @@
     const flatVariations = [
             {
+                id: "99",
+                version: "v1",
+                movie: "6",
+                seat: "E12",
+                distance: "3km",
+                time: "17:00",
+                date: "today",
+                iterationLimit: 0,
+                rules: {
+                    0: { availableSeats: ["E12", "F12", "G12", "I12", "B11", "E11","A1","B1","H1", "I1","E12"] },
+                }
+            },
+            {
                 id: "0",
                 version: "v1",
                 movie: "4",

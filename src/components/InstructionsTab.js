@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Button } from '@mui/material';
 import movies from "@/data/movies";
 
 const InstructionsTab = ({variation} )  => {
+    const showDebugData = false;
     const selectedMovie = movies.find((movie) => movie.id === parseInt(variation.movie));
 
     return (
@@ -22,7 +23,7 @@ const InstructionsTab = ({variation} )  => {
                 <strong>Seat:</strong> {variation.seat}<br/>
             </Typography>
             {/* Debugging info - remove on deploy*/}
-            <Typography variant="body2" style={{color:"#b33"}}>
+            {showDebugData ?? <Typography variant="body2" style={{color:"#b33"}}>
               <strong>Variation ID:</strong> {variation.id} - Seats: 
               {Object.keys(variation.rules).map((key) => {
                   const seats = variation.rules[key].availableSeats;
@@ -32,7 +33,7 @@ const InstructionsTab = ({variation} )  => {
                   {seats.find((seat) => seat == variation.seat)?variation.seat:""}
                   </span>
               })}
-            </Typography>
+            </Typography>}
             {/* End Debugging info - remove on deploy*/}
           </CardContent>
         </Card>
