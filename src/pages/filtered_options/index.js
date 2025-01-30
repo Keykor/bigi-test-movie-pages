@@ -20,6 +20,7 @@ import InstructionsTab from "../../components/InstructionsTab";
 import Head from "next/head";
 import Footer from "../../components/Footer";
 import flatVariations from "../../data/flat_variations";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 export default function SelectFilteredOption() {
 
@@ -51,16 +52,35 @@ const [selectedOption, setSelectedOption] = useState(options.find( (option) => o
 const [selectedTheatreId, setSelectedTheatreId] = useState(null);
 const variation = flatVariations.find((variation) => variation.id === variationId);
 const [shuffledOptions] = useState(shuffled(options));
+  const { addSelection } = useEventTracker();
 
   const handleNext = () => {
     if (selectedOption) {
       let nextPath = `/summary?movieId=${movieId}&theatreId=${selectedTheatreId}&scheduleId=${scheduleId}&time=${selectedOption.time}&seat=${selectedOption.seat}&variationId=${variationId}&optionId=${selectedOption.id}`
+      addSelection({
+        movieId: movieId,
+        theatreId: selectedTheatreId,
+        scheduleId: scheduleId,
+        time: selectedOption?.time || null, 
+        seat: selectedOption?.seat || null,
+        variationId: variationId,
+        optionId: selectedOption?.id || null
+      });
       router.push(nextPath);
     }
   };
 
   const handleBack = () => {
     let nextPath = `/options?movieId=${movieId}&variationId=${variationId}`
+    addSelection({
+      movieId: movieId,
+      theatreId: selectedTheatreId,
+      scheduleId: scheduleId,
+      time: selectedOption?.time || null, 
+      seat: selectedOption?.seat || null,
+      variationId: variationId,
+      optionId: selectedOption?.id || null
+    });
     router.push(nextPath);
   };
 

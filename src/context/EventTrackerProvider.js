@@ -18,6 +18,7 @@ export const EventTrackerProvider = ({ children }) => {
       version,
       pages: [],
       experimentStartTime: new Date().toISOString(),
+      selections: [],
     });
     setIsTracking(true);
     console.log(`Experiment started for subject: ${JSON.stringify(subject)}, version: ${version}`);
@@ -83,8 +84,6 @@ export const EventTrackerProvider = ({ children }) => {
     }
   };
 
-  
-  /*
   const downloadExperimentData = (data) => {
     try {
       const jsonData = JSON.stringify(data, null, 2);
@@ -99,7 +98,7 @@ export const EventTrackerProvider = ({ children }) => {
       console.error("Error during Blob creation or opening:", error);
     }
   };
-  */
+  
 
 
   const resetExperiment = () => {
@@ -282,7 +281,14 @@ export const EventTrackerProvider = ({ children }) => {
     };
   }, [router, isTracking]);
   
-  
+  const addSelection = (selection) => {
+    setExperimentData((prev) => {
+      return {
+        ...prev,
+        selections: [...prev.selections, selection],
+      };
+    });
+  }
 
   return (
     <EventTrackerContext.Provider
@@ -292,6 +298,7 @@ export const EventTrackerProvider = ({ children }) => {
         startExperiment,
         stopExperiment,
         //trackWidgetTime,
+        addSelection
       }}
     >
       {children}

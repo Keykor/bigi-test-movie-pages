@@ -12,6 +12,7 @@ import Footer from "../../components/Footer";
 import InstructionsTab from "../../components/InstructionsTab";
 import flatVariations from "../../data/flat_variations";
 import {useUserFlow} from "@/context/UserFlowProvider";
+import { useEventTracker } from "@/context/EventTrackerProvider";
 
 const seatStructure = {
     Back: {
@@ -88,6 +89,7 @@ export default function SelectSeats() {
 
     const { getAvailableSeats } = useUserFlow();
     const availableSeats = getAvailableSeats(movieId, theatreId, scheduleId, time);
+    const { addSelection } = useEventTracker();
 
     const handleSeatClick = (seatId) => {
         if (availableSeats.includes(seatId)) {
@@ -98,12 +100,28 @@ export default function SelectSeats() {
     const handleNext = () => {
         if (selectedSeat) {
             let nextPath = `/summary?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&time=${time}&variationId=${variationId}&seat=${selectedSeat}`
+            addSelection({
+                movieId: movieId,
+                theatreId: theatreId,
+                scheduleId: scheduleId,
+                time: time,
+                seat: selectedSeat,
+                variationId: variationId
+            });
             router.push(nextPath);
         }
     };
 
     const handleBack = () => {
         let nextPath = `/show?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`
+        addSelection({
+            movieId: movieId,
+            theatreId: theatreId,
+            scheduleId: scheduleId,
+            time: time,
+            seat: selectedSeat,
+            variationId: variationId
+        });
         router.push(nextPath);
     }
 
