@@ -112,16 +112,10 @@ export default function Welcome() {
             Per task, you are asked to purchase a single movie ticket for a specific <strong>movie</strong> at a specific <strong>date and time</strong> at the <strong>movie theatre of your choice</strong>. No money is needed for the purchase process.
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            Please note that your <strong>preferred seat is E12</strong>, and you should only purchase a movie ticket when seat E12 is available.
+            Please note that your <strong>preferred seat is E12</strong>, and you should only purchase a movie ticket when seat E12 is available. You may have to change the movie theatre to find your preferred seat. <strong>You will always be able to find a movie theatre where seat E12 is available</strong>.
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            Because there are multiple movie theatres close to your (fictitous) location, we will also specify the distance from your home, which will determine the available movie theatres.
-            </Typography>
-            <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            When making your selections, please ensure that you meet the specified parameters per task instruction: <strong>movie, distance from home, date, time, and seat E12</strong>.
-            </Typography>
-            <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            <strong>It may happen that seat E12 is not available</strong>. In this case, you need to <strong>go back and try another movie theatre</strong> until you find one where the seat is available. <strong>You will always be able to find a movie theatre where seat E12 is available</strong>.
+            Because there are multiple movie theatres close to your (fictitious) location, we will also specify the distance from your home, which will determine the available movie theatres.  
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
             Note: The task instructions with its parameters (movie, time, distance, seat) will be <strong>visible on the right-hand side of the screen at all times</strong>.
