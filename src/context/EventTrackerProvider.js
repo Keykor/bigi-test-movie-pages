@@ -56,11 +56,11 @@ export const EventTrackerProvider = ({ children }) => {
   
       setSampleCounter((prev) => prev + 1); 
       // Convertir los datos del experimento a una cadena JSON
-      //const jsonData = JSON.stringify(updatedExperimentData, null, 2);
+      const jsonData = JSON.stringify(updatedExperimentData, null, 2);
       // Subir los datos a Vercel Blob
-      //uploadExperimentData(jsonData)
+      uploadExperimentData(jsonData)
       
-      downloadExperimentData(updatedExperimentData); 
+      //downloadExperimentData(updatedExperimentData); 
       console.log("Experiment data:", updatedExperimentData);
 
       return updatedExperimentData;
