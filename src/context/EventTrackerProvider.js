@@ -54,12 +54,13 @@ export const EventTrackerProvider = ({ children }) => {
         pages: updatedPages,
       };  
   
-      setSampleCounter((prev) => prev + 1); 
+      
       // Convertir los datos del experimento a una cadena JSON
       const jsonData = JSON.stringify(updatedExperimentData, null, 2);
       // Subir los datos a Vercel Blob
       uploadExperimentData(jsonData)
       
+      setSampleCounter((prev) => prev + 1); 
       //downloadExperimentData(updatedExperimentData); 
       console.log("Experiment data:", updatedExperimentData);
 
@@ -73,8 +74,7 @@ export const EventTrackerProvider = ({ children }) => {
   
   const uploadExperimentData = async (data) => {
     try {
-      const filename = `experiments/${uuid}__sample${sampleCounter}__.json`; 
-      setSampleCounter((prev) => prev + 1); 
+      const filename = `experiments/${uuid}__sample${sampleCounter+1}__.json`; 
 
       const blob = await put(filename, data, {
         access: "public",
