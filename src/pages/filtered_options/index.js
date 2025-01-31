@@ -58,6 +58,7 @@ const [shuffledOptions] = useState(shuffled(options));
     if (selectedOption) {
       let nextPath = `/summary?movieId=${movieId}&theatreId=${selectedTheatreId}&scheduleId=${scheduleId}&time=${selectedOption.time}&seat=${selectedOption.seat}&variationId=${variationId}&optionId=${selectedOption.id}`
       addSelection({
+        button: "next",
         movieId: movieId,
         theatreId: selectedTheatreId,
         scheduleId: scheduleId,
@@ -73,6 +74,7 @@ const [shuffledOptions] = useState(shuffled(options));
   const handleBack = () => {
     let nextPath = `/options?movieId=${movieId}&variationId=${variationId}`
     addSelection({
+      button: "back",
       movieId: movieId,
       theatreId: selectedTheatreId,
       scheduleId: scheduleId,

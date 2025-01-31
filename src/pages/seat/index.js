@@ -101,6 +101,7 @@ export default function SelectSeats() {
         if (selectedSeat) {
             let nextPath = `/summary?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&time=${time}&variationId=${variationId}&seat=${selectedSeat}`
             addSelection({
+                button: "next",
                 movieId: movieId,
                 theatreId: theatreId,
                 scheduleId: scheduleId,
@@ -115,6 +116,7 @@ export default function SelectSeats() {
     const handleBack = () => {
         let nextPath = `/show?movieId=${movieId}&theatreId=${theatreId}&scheduleId=${scheduleId}&variationId=${variationId}`
         addSelection({
+            button: "back",
             movieId: movieId,
             theatreId: theatreId,
             scheduleId: scheduleId,
