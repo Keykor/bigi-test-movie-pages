@@ -123,7 +123,8 @@ export default function Welcome() {
             
             {!instructionsRead && 
                 <>
-                <Typography variant="h5" sx={{ color: "#393", margin: "25px 0 10px"}} >Please answer these 2 questions to start</Typography>
+                <Typography variant="h5" sx={{ color: "#393", margin: "45px 0 10px"}} >About Yourself</Typography>
+                <Typography variant="h6" sx={{ margin: "10px 0"}} >Please answer these 2 questions to start</Typography>
                 <div>
                   <FormControl sx={{ m: 1, minWidth: "45%" }}>
                     <InputLabel id="ticketFrequencyLabel">How frequently do you book online tickets?</InputLabel>
@@ -171,11 +172,11 @@ export default function Welcome() {
                         debugMode={debugMode}
                     />
                 ))}
-                <Card variant="outlined" align="center" style={{margin: "10px 0 25px 0", width: "30%", color:"#aaa"}}>
+                <Card variant="outlined" align="center" style={{margin: "10px 0 25px 0", width: "22%", color:"#aaa"}}>
                     <CardContent>
                     <Typography variant={"h6"} >
                     {completedVariations.length==variations.length?
-                        <Button onClick={handleBackToProlific} variant="contained" size="large">Return to Prolific</Button>:"Return to Prolific button will appear here."
+                        <Button onClick={handleBackToProlific} variant="contained" color="success" size="large">Return to Prolific</Button>:"Return to Prolific button will appear here."
                     }
                     </Typography>
                     </CardContent>
