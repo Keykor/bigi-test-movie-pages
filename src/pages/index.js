@@ -108,17 +108,16 @@ export default function Welcome() {
             <Typography variant="h4" sx={{marginBottom: "15px"}} >Thanks for joining! Please read carefully</Typography>
             
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            We want you to purchase eleven movie tickets - one ticket per task (there are eleven tasks in total).
-            Per task, you are asked to purchase a single movie ticket for a specific <strong>movie</strong> at a specific <strong>date and time</strong> at the <strong>movie theatre of your choice</strong>. No money is needed for the purchase process.
+            For this study we want you to purchase 11 movie tickets. For each purchase you should get exactly one ticket for <strong>one specific movie</strong> at <strong>one specific date and time</strong> at <strong>a movie theatre of your choice</strong>. Don't worry, the purchases are virtual and no money is needed.
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            Please note that your <strong>preferred seat is E12</strong>, and you should only purchase a movie ticket when seat E12 is available. You may have to change the movie theatre to find your preferred seat. <strong>You will always be able to find a movie theatre where seat E12 is available</strong>.
+            Please note that your <strong>preferred seat is E12</strong>, and you should only purchase a movie ticket when seat E12 is available. Should E12 not be available, you should change the movie theatre. <strong>For each purchase selection at least one movie theatre with your preferred seat E12 will be available</strong>.
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            Because there are multiple movie theatres close to your (fictitious) location, we will also specify the distance from your home, which will determine the available movie theatres.  
+            Because there are multiple movie theatres close to your (fictitious) location, we will also specify the <strong>distance</strong> from your home, which will determine the available movie theatres. 
             </Typography>
             <Typography variant="h6" style={{fontSize: "1.1em", lineHeight:"inherit", marginBottom: "14px"}} > 
-            Note: The task instructions with its parameters (movie, time, distance, seat) will be <strong>visible on the right-hand side of the screen at all times</strong>.
+            Important Note: The instructions for the purchase (move, time, distance, seat) will always be <strong>visible on the right-hand side of the screen</strong>.
             </Typography>
             
             {!instructionsRead && 
