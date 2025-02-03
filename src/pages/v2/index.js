@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Card, CardActionArea, CardMedia, CardContent, Checkbox, Container, Typography } from "@mui/material";
+import { Grid, Card, CardActionArea, CardMedia, CardContent, Checkbox, Container, Modal, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import allMovies from "../../data/movies";
 import flatVariations from "../../data/flat_variations";
@@ -31,10 +31,24 @@ export default function SelectMovie() {
         stopExperiment();
         router.push("/");
     }
-
+    
+    const [open, setOpen] = React.useState(true);
+    const handleClose = () => setOpen(false);
 
     return (
         <>
+
+        <Modal  
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+            
+            {variation && <InstructionsTab variation={variation} modal={true} handleClose={handleClose}/>}
+
+        </Modal>
+
         <Container style={{ marginTop: "80px" }}>
             {/* Barra superior */}
             <NavigationBar />
@@ -43,7 +57,7 @@ export default function SelectMovie() {
             <ProgressStepper activeStep={0} />
             
             {/* Instrucciones */}
-            {variation && <InstructionsTab variation={variation}/>}
+            {(variation && !open) && <InstructionsTab variation={variation}/>}
 
             {/* Selección de películas */}
             <Typography variant="h5" style={{ marginBottom: "20px" }}>

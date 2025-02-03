@@ -20,7 +20,8 @@ export const UserFlowProvider = ({ children }) => {
         const todayString = new Date().toLocaleString("en-US", { month: "short", day: "2-digit" });
         const askedDate = (iterationConfig.date == "today")?todayString:(iterationConfig.date);
         const dateRight = selectedSchedule?selectedSchedule.date == askedDate:false;
-        return distanceRight && movieRight && dateRight;
+        const timeRight = (iterationConfig.time == time);
+        return distanceRight && movieRight && dateRight && timeRight;
     }
 
     const getAvailableSeats = (movieId, theatreId, scheduleId, time) => {

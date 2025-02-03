@@ -1,17 +1,20 @@
 import React from "react";
-import { Card, CardContent, Typography, Button } from '@mui/material';
+import { Box, Card, CardContent, Typography, Button } from '@mui/material';
 import movies from "@/data/movies";
 
-const InstructionsTab = ({variation} )  => {
+const InstructionsTab = ({variation, modal, handleClose} )  => {
     const showDebugData = false;
     const selectedMovie = movies.find((movie) => movie.id === parseInt(variation.movie));
+    const rightPosition = modal?"40%":0;
+    const boxWidth = modal?500:230;
 
     return (
-        <Card sx={{ maxWidth: 230, position: "fixed", zIndex: "9999", right: "0", top:"20%", background: "#FFDDAA" }}>
+        <Card sx={{ maxWidth: boxWidth, position: "fixed", zIndex: "9999", right: rightPosition, top:"20%", background: "#FFDDAA" }}>
           <CardContent>
             <Typography variant="h5" component="div">
-              Conditions
+              Instructions
             </Typography>
+            {modal && <Typography variant="body1">Purchase a ticket for the following conditions: </Typography> }
             <Typography>
                 <strong>- Movie:</strong> {selectedMovie.title}<br/> 
                 <strong>- Date:</strong> {variation.date}<br/>
@@ -19,6 +22,17 @@ const InstructionsTab = ({variation} )  => {
                 <strong>- Start Time:</strong> {variation.time}<br/>
                 <strong>- Seat:</strong> {variation.seat}<br/>
             </Typography>
+            {modal && 
+              <Box textAlign='center' sx={{margin: "30px 0 0"}}>
+                <Button 
+                  variant="outlined"
+                  color="orange"
+                  onClick={handleClose}
+                  sx={{}}>
+                  Ok, Move to the right &gt;&gt;
+                </Button>
+              </Box>
+            }
             {/* Debugging info - remove on deploy*/}
             {showDebugData ?? <Typography variant="body2" style={{color:"#b33"}}>
               <strong>Variation ID:</strong> {variation.id} - Seats: 
