@@ -14,10 +14,10 @@ export default function SelectMovie() {
     const router = useRouter();
     const [selectedMovie, setSelectedMovie] = React.useState(0);
     const movies = allMovies.slice(0,6);
-    const { variationId } = router.query;
-    const variation = flatVariations.find((variation) => variation.id === variationId);
+    const { variationId } = router.query || {};
+    const variation = flatVariations.find((variation) => variation.id === variationId) || {};
 
-    const { stopExperiment } = useEventTracker();
+    const { stopExperiment } = useEventTracker?.() || { stopExperiment: () => {} };
     const handleNext = () => {
         if (selectedMovie) {
             let nextPath = `/theatre?movieId=${selectedMovie}&variationId=${variationId}`

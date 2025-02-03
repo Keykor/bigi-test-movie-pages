@@ -12,14 +12,14 @@ import { useEventTracker } from "@/context/EventTrackerProvider";
 
 export default function SelectMovie() {
     const router = useRouter();
-    const { variationId } = router.query;
-    const variation = flatVariations.find((variation) => variation.id === variationId);
+    const { variationId } = router.query || {};
+    const variation = flatVariations.find((variation) => variation.id === variationId) || {};
     const [selectedMovie, setSelectedMovie] = React.useState(0);
     const movies = allMovies.slice(0,6);
 
     useEffect(() => {}, [variation]) // All the magic is here
     
-    const { stopExperiment } = useEventTracker();
+    const { stopExperiment } = useEventTracker?.() || { stopExperiment: () => {} };
     const handleNext = () => {
         if (selectedMovie) {
             let nextPath = `../options?movieId=${selectedMovie}&variationId=${variationId}`
