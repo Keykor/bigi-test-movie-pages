@@ -95,6 +95,7 @@ export default function SelectOptions() {
               variant={selectedSchedule === schedule ? "contained" : "outlined"}
               color={selectedSchedule === schedule ? "primary" : "default"}
               onClick={() => setSelectedSchedule(schedule)}
+              data-track-id={`date="${schedule.date}"`}
             >
               {schedule.date === todayString ? "TODAY" : schedule.date}
             </Button>
@@ -110,6 +111,7 @@ export default function SelectOptions() {
                 variant={selectedTimespan === timespan.description ? "contained" : "outlined"}
                 color={selectedTimespan === timespan.description ? "primary" : "default"}
                 onClick={() => setSelectedTimespan(timespan.description)}
+                data-track-id={`timespan="${timespan.description}"`}
               >
                 {timespan.description}
               </Button>
@@ -128,6 +130,7 @@ export default function SelectOptions() {
                 variant={maxDistance === distance ? "contained" : "outlined"}
                 color={maxDistance === distance ? "primary" : "default"}
                 onClick={() => handleDistanceChange(distance)}
+                data-track-id={`distance="${distance}"`}
               >
                 &lt; {distance} km
               </Button>
@@ -179,6 +182,7 @@ export default function SelectOptions() {
                              : "white", // Disponible
                             border: "1px solid black",
                           }}
+                          data-track-id={`seat-area="${area.row}-${area.col}"`}
                           onClick={() => setSelectedSeatArea(area)}
                        />
                     

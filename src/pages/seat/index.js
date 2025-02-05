@@ -189,6 +189,7 @@ export default function SelectSeats() {
                                                             border: "1px solid black",
                                                             cursor: "pointer"
                                                         }}
+                                                        data-track-id={`seat="${seatId}"`}
                                                         disabled={!availableSeats.includes(seatId)}
                                                         onClick={() => handleSeatClick(seatId)}
                                                     />

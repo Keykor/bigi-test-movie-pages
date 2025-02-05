@@ -17,6 +17,7 @@ export default function NavigationButtons({ onNext, onBack, prevDisabled = false
                 variant="contained"
                 color="primary"
                 size="large"
+                data-track-id={'button="back"'}
                 disabled={prevDisabled} // Deshabilitado si no cumple con alguna condición
                 onClick={onBack} // Navega hacia atrás
             >
@@ -26,6 +27,7 @@ export default function NavigationButtons({ onNext, onBack, prevDisabled = false
                 variant="contained"
                 color="primary"
                 size="large"
+                data-track-id={'button="next"'}
                 disabled={nextDisabled} // Deshabilitado si no cumple con alguna condición
                 onClick={onNext} // Acción personalizada para el botón Next
             >

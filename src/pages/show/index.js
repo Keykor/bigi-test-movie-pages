@@ -79,6 +79,7 @@ export default function SelectShow() {
                                 fullWidth
                                 variant={selectedTime === time ? "contained" : "outlined"}
                                 color={selectedTime === time ? "primary" : "default"}
+                                data-track-id={`show-time="${time}"`}
                                 onClick={() => setSelectedTime(time)}
                             >
                                 {time}

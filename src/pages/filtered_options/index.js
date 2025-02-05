@@ -125,6 +125,7 @@ const [shuffledOptions] = useState(shuffled(options));
               variant={(selectedOption?.id == option.id) ? "contained" : "outlined"}
               color={(selectedOption?.id == option.id) ? "primary" : "default"}
               onClick={() => handleSelectOption(option)}
+              data-track-id={`selected-option="${option.id}"`}
             >
               {option.theatre} {option.time} <strong> Seat {option.seat}</strong>
             </Button>

@@ -56,14 +56,13 @@ export const EventTrackerProvider = ({ children }) => {
   
       
       // Convertir los datos del experimento a una cadena JSON
-      const jsonData = JSON.stringify(updatedExperimentData, null, 2);
+      //const jsonData = JSON.stringify(updatedExperimentData, null, 2);
       // Subir los datos a Vercel Blob
-      uploadExperimentData(jsonData)
+      //uploadExperimentData(jsonData)
       
-      setSampleCounter((prev) => prev + 1); 
-      //downloadExperimentData(updatedExperimentData); 
+      downloadExperimentData(updatedExperimentData); 
       console.log("Experiment data:", updatedExperimentData);
-
+      setSampleCounter((prev) => prev + 1); 
       return updatedExperimentData;
     });
   
@@ -151,12 +150,17 @@ export const EventTrackerProvider = ({ children }) => {
       setExperimentData((prev) => {
         const updatedPages = [...prev.pages];
         const lastPageIndex = updatedPages.length - 1;
+
+        const trackedElement = event.target.closest('[data-track-id]');
+        const trackId = trackedElement ? trackedElement.dataset.trackId : null;
+        console.log("Click on element with track ID:", trackId);
   
         if (lastPageIndex >= 0) {
           updatedPages[lastPageIndex].clicks.push({
             x: event.clientX,
             y: event.clientY,
             element: event.target.tagName,
+            trackId: trackId,
             time: Date.now(),
           });
         }

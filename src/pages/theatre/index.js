@@ -131,6 +131,7 @@ export default function SelectTheatre() {
                   >
                     <CardActionArea
                       onClick={() => setSelectedTheatre(theatre.id)}
+                      data-track-id={`theatre-card="${theatre.id}"`}
                       data-active={selectedTheatre === theatre.id ? "" : undefined}
                       sx={{
                         height: "100%",

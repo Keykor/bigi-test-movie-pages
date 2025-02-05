@@ -67,6 +67,7 @@ export default function SelectMovie() {
                         <Card>
                           <CardActionArea
                             onClick={() => setSelectedMovie(movie.id)}
+                            data-track-id={`movie-card="${movie.id}"`}
                             data-active={selectedMovie === movie.id ? '' : undefined}
                             sx={{
                               height: '100%',
