@@ -67,6 +67,7 @@ export default function SelectDate() {
                         variant={scheduleId === schedule.id ? "contained" : "outlined"}
                         color={scheduleId === schedule.id ? "primary" : "default"}
                         onClick={() => setScheduleId(schedule.id)}
+                        data-track-id={`schedule="${schedule.id}"`}
                     >
                         {schedule.date === todayString ? "TODAY" : schedule.date}
                     </Button>
