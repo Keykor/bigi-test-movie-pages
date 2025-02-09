@@ -6,7 +6,7 @@ import flatVariations from "@/data/flat_variations";
 
 
 export default function Welcome() {
-    const showDebugButtons = false;
+    const showDebugButtons = true;
     const [debugMode, setDebugMode] = useState(false);
     
     const router = useRouter();
@@ -94,7 +94,7 @@ export default function Welcome() {
 
     return (
             <Container>
-            {showDebugButtons ??
+            {showDebugButtons &&
                 <>
             <Button onClick={handleShuffle} variant="contained" color="success" size="small">
                 Re-Shuffle Variants
